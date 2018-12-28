@@ -183,11 +183,48 @@ class GalleryImageEdit extends Component {
 	}
 }
 
-export default withSelect( ( select, ownProps ) => {
+function getBlobDimensions( url ) {
+	//eslint-disable-next-line
+	console.log( '->getBlobDimensions:', url );
+	return new Promise( ( resolve, reject ) => {
+		const img = new Image( url );
+		img.onerror = reject;
+		img.onload = () => {
+			const { naturalHeight: height, naturalWidth: width } = img;
+			resolve( { height, width } );
+		};
+		img.src = url;
+	} );
+}
+
+export default withSelect( async ( select, ownProps ) => {
 	const { getMedia } = select( 'core' );
 	const { id } = ownProps;
 
+	//eslint-disable-next-line
+	console.log( '->GalleryImageEdit IN:', ownProps );
+
+	let height, width;
+	if ( ! ownProps.width && isBlobURL( ownProps.url ) ) {
+		//eslint-disable-next-line
+		console.log( 'Go get blob!' );
+		await getBlobDimensions( ownProps.url )
+			.then( blobDimension => {
+				height = blobDimension.height;
+				width = blobDimension.width;
+			} )
+			.catch( () => {
+				height = 'auto';
+				width = 'auto';
+			} );
+	}
+
+	//eslint-disable-next-line
+	console.log( 'blobDimensions:', height, width );
+
 	return {
+		height: ownProps.height || height,
 		image: id ? getMedia( id ) : null,
+		width: ownProps.width || width,
 	};
 } )( GalleryImageEdit );
