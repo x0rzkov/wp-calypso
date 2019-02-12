@@ -128,21 +128,23 @@ class GalleryImageEdit extends Component {
 			// direct image selection and unfocus caption fields.
 			/* eslint-disable jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/no-noninteractive-tabindex */
 			<Fragment>
-				<img
-					alt={ alt }
-					aria-label={ ariaLabel }
-					data-height={ height }
-					data-id={ id }
-					data-link={ link }
-					data-url={ origUrl }
-					data-width={ width }
-					onClick={ this.onImageClick }
-					onKeyDown={ this.onImageKeyDown }
-					ref={ this.img }
-					src={ url }
-					tabIndex="0"
-				/>
-				{ isBlobURL( origUrl ) && <Spinner /> }
+				{ url && (
+					<img
+						alt={ alt }
+						aria-label={ ariaLabel }
+						data-height={ height }
+						data-id={ id }
+						data-link={ link }
+						data-url={ origUrl }
+						data-width={ width }
+						onClick={ this.onImageClick }
+						onKeyDown={ this.onImageKeyDown }
+						ref={ this.img }
+						src={ url }
+						tabIndex="0"
+					/>
+				) }
+				{ ( ! url || isBlobURL( origUrl ) ) && <Spinner /> }
 			</Fragment>
 			/* eslint-enable jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/no-noninteractive-tabindex */
 		);
@@ -152,7 +154,7 @@ class GalleryImageEdit extends Component {
 			<figure
 				className={ classnames( 'tiled-gallery__item', {
 					'is-selected': isSelected,
-					'is-transient': isBlobURL( origUrl ),
+					'is-transient': ! url || isBlobURL( origUrl ),
 				} ) }
 			>
 				{ isSelected && (

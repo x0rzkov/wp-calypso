@@ -16,8 +16,14 @@
 			outline: 4px solid $tiled-gallery-selection;
 		}
 
-		&.is-transient img {
-			opacity: 0.3;
+		&.is-transient {
+			background-color: $tiled-gallery-transient-background-color;
+			// Ensure placeholders without dimensions are visible
+			min-height: 100px;
+			min-width: 100px;
+			img {
+				opacity: 0.3;
+			}
 		}
 
 		/* @TODO Caption has been commented out */
