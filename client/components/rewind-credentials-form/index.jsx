@@ -206,6 +206,7 @@ export class RewindCredentialsForm extends Component {
 							{ labels.user || translate( 'Server username' ) }
 						</FormLabel>
 						<FormTextInput
+							autocomplete="off"
 							name="user"
 							id="server-username"
 							placeholder={ translate( 'username' ) }
@@ -222,6 +223,7 @@ export class RewindCredentialsForm extends Component {
 							{ labels.pass || translate( 'Server password' ) }
 						</FormLabel>
 						<FormPasswordInput
+							autocomplete="off"
 							name="pass"
 							id="server-password"
 							placeholder={ translate( 'password' ) }
