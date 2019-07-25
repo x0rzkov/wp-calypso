@@ -76,10 +76,7 @@ import './style.scss';
 export class PlanFeatures extends Component {
 	render() {
 		const { isInSignup, planProperties, plans, selectedPlan, withScroll } = this.props;
-		const tableClasses = classNames(
-			'plan-features__table',
-			`has-${ planProperties.length }-cols`
-		);
+		const tableClasses = classNames( 'plan-features__table' );
 		const planClasses = classNames( 'plan-features', {
 			'plan-features--signup': isInSignup,
 		} );
@@ -91,9 +88,9 @@ export class PlanFeatures extends Component {
 		let bottomButtons = null;
 
 		if ( withScroll || ! isInSignup ) {
-			planDescriptions = <tr>{ this.renderPlanDescriptions() }</tr>;
+			planDescriptions = <div>{ this.renderPlanDescriptions() }</div>;
 
-			bottomButtons = <tr>{ this.renderBottomButtons() }</tr>;
+			bottomButtons = <div>{ this.renderBottomButtons() }</div>;
 		}
 
 		const initialSelectedIndex = selectedPlan
@@ -113,16 +110,14 @@ export class PlanFeatures extends Component {
 							cellSelector=".plan-features__table-item"
 							initialSelectedIndex={ initialSelectedIndex }
 						>
-							<table className={ tableClasses }>
-								<tbody>
-									<tr>{ this.renderPlanHeaders() }</tr>
-									{ ! withScroll && planDescriptions }
-									<tr>{ this.renderTopButtons() }</tr>
-									{ withScroll && planDescriptions }
-									{ this.renderPlanFeatureRows() }
-									{ ! withScroll && ! isInSignup && bottomButtons }
-								</tbody>
-							</table>
+							<div className={ tableClasses }>
+								<div>{ this.renderPlanHeaders() }</div>
+								{ ! withScroll && planDescriptions }
+								<div>{ this.renderTopButtons() }</div>
+								{ withScroll && planDescriptions }
+								{ this.renderPlanFeatureRows() }
+								{ ! withScroll && ! isInSignup && bottomButtons }
+							</div>
 						</PlanFeaturesScroller>
 					</div>
 				</div>
@@ -416,7 +411,7 @@ export class PlanFeatures extends Component {
 			}
 
 			return (
-				<td key={ planName } className={ classes }>
+				<div key={ planName } className={ classes }>
 					<PlanFeaturesHeader
 						audience={ audience }
 						availableForPurchase={ availableForPurchase }
@@ -440,7 +435,7 @@ export class PlanFeatures extends Component {
 						title={ planConstantObj.getTitle() }
 						plansWithScroll={ withScroll }
 					/>
-				</td>
+				</div>
 			);
 		} );
 	}
@@ -464,11 +459,11 @@ export class PlanFeatures extends Component {
 			}
 
 			return (
-				<td key={ planName } className={ classes }>
+				<div key={ planName } className={ classes }>
 					{ isPlaceholder ? <SpinnerLine /> : null }
 
 					<p className="plan-features__description">{ description }</p>
-				</td>
+				</div>
 			);
 		} );
 	}
@@ -516,7 +511,7 @@ export class PlanFeatures extends Component {
 			}
 
 			return (
-				<td key={ planName } className={ classes }>
+				<div key={ planName } className={ classes }>
 					<PlanFeaturesActions
 						availableForPurchase={ availableForPurchase }
 						buttonText={ buttonText }
@@ -537,7 +532,7 @@ export class PlanFeatures extends Component {
 						primaryUpgrade={ primaryUpgrade }
 						selectedPlan={ selectedPlan }
 					/>
-				</td>
+				</div>
 			);
 		} );
 	}
@@ -559,9 +554,9 @@ export class PlanFeatures extends Component {
 		const longestFeatures = this.getLongestFeaturesList();
 		return map( longestFeatures, ( featureKey, rowIndex ) => {
 			return (
-				<tr key={ rowIndex } className="plan-features__row">
+				<div key={ rowIndex } className="plan-features__row">
 					{ this.renderPlanFeatureColumns( rowIndex ) }
-				</tr>
+				</div>
 			);
 		} );
 	}
@@ -602,11 +597,11 @@ export class PlanFeatures extends Component {
 			} );
 
 			return currentFeature ? (
-				<td key={ `${ planName }-${ key }` } className={ classes }>
+				<div key={ `${ planName }-${ key }` } className={ classes }>
 					{ this.renderFeatureItem( currentFeature ) }
-				</td>
+				</div>
 			) : (
-				<td key={ `${ planName }-none` } className="plan-features__table-item" />
+				<div key={ `${ planName }-none` } className="plan-features__table-item" />
 			);
 		} );
 	}
@@ -647,7 +642,7 @@ export class PlanFeatures extends Component {
 			}
 
 			return (
-				<td key={ planName } className={ classes }>
+				<div key={ planName } className={ classes }>
 					<PlanFeaturesActions
 						availableForPurchase={ availableForPurchase }
 						canPurchase={ canPurchase }
@@ -666,7 +661,7 @@ export class PlanFeatures extends Component {
 						onUpgradeClick={ onUpgradeClick }
 						selectedPlan={ selectedPlan }
 					/>
-				</td>
+				</div>
 			);
 		} );
 	}
