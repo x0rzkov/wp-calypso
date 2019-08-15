@@ -100,8 +100,7 @@ export class PlanFeatures extends Component {
 	}
 
 	render() {
-
-		const { isInSignup, planProperties, plans, selectedPlan, withScroll, translate } = this.props;
+		const { isInSignup, planProperties, plans, selectedPlan, withScroll } = this.props;
 		const tableClasses = classNames(
 			'plan-features__table',
 			`has-${ planProperties.length }-cols`
@@ -487,7 +486,6 @@ export class PlanFeatures extends Component {
 			}
 
 			return (
-
 				<div key={ planName } className={ classes }>
 					<PlanFeaturesHeader
 						audience={ audience }
