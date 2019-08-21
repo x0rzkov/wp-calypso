@@ -323,7 +323,9 @@ export class PlanFeatures extends Component {
 		}
 		return ReactDOM.createPortal(
 			<Notice className="plan-features__notice" showDismiss={ false } status="is-info">
-				{ translate( 'You need to be the plan owner to manage this site.' ) }
+				{ translate(
+					'To manage plan or payment options on this website, contact the site owner.'
+				) }
 			</Notice>,
 			bannerContainer
 		);
