@@ -6,7 +6,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Gridicon from 'gridicons';
+import Gridicon from 'components/gridicons';
 import { connect } from 'react-redux';
 import { localize } from 'i18n-calypso';
 import { startCase } from 'lodash';
@@ -220,6 +220,7 @@ export class Login extends React.Component {
 
 	render() {
 		const {
+			isJetpack,
 			isLoginView,
 			locale,
 			path,
@@ -250,7 +251,7 @@ export class Login extends React.Component {
 								twoFactorAuthType={ twoFactorAuthType }
 							/>
 						) }
-						{ isLoginView && <TranslatorInvite path={ path } /> }
+						{ isLoginView && ! isJetpack && <TranslatorInvite path={ path } /> }
 					</div>
 				</Main>
 
