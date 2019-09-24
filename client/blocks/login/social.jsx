@@ -1,5 +1,3 @@
-/** @format */
-
 /**
  * External dependencies
  */
@@ -27,6 +25,7 @@ import { recordTracksEventWithClientId as recordTracksEvent } from 'state/analyt
 import WpcomLoginForm from 'signup/wpcom-login-form';
 import { InfoNotice } from 'blocks/global-notice';
 import { login } from 'lib/paths';
+import { preventWidows } from 'lib/formatting';
 
 /**
  * Style dependencies
@@ -190,15 +189,17 @@ class SocialLoginForm extends Component {
 					/>
 
 					<p className="login__social-tos">
-						{ this.props.translate(
-							"If you continue with Google or Apple and don't already have a WordPress.com account, you" +
-								' are creating an account and you agree to our' +
-								' {{a}}Terms of Service{{/a}}.',
-							{
-								components: {
-									a: <a href="https://wordpress.com/tos" />,
-								},
-							}
+						{ preventWidows(
+							this.props.translate(
+								"If you continue with Google or Apple and don't already have a WordPress.com account, you" +
+									' are creating an account and you agree to our' +
+									' {{a}}Terms of Service{{/a}}.',
+								{
+									components: {
+										a: <a href="https://wordpress.com/tos" />,
+									},
+								}
+							)
 						) }
 					</p>
 				</div>
