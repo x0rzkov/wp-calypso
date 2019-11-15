@@ -1,10 +1,13 @@
 /**
  * External dependencies
  */
-
 import photon from 'photon';
-import { parse as parseUrl } from 'url';
-import { endsWith } from 'lodash';
+
+/**
+ * Internal dependencies
+ */
+import { determineUrlType, URL_TYPE } from 'lib/url/url-type';
+import format from 'lib/url/format';
 
 /**
  * Pattern matching URLs to be left unmodified.
@@ -35,8 +38,8 @@ const REGEXP_A8C_HOST = /^([-a-zA-Z0-9_]+\.)*(gravatar\.com|wordpress\.com|wp\.c
  * NOTE: This function will return `null` for external URLs with query strings,
  * because Photon itself does not support this!
  *
- * @param  {string} url The URL to secure
- * @return {?string}    The secured URL, or `null` if we couldn't make it safe
+ * @param   {string} url The URL to secure
+ * @returns {?string}    The secured URL, or `null` if we couldn't make it safe
  */
 export default function safeImageUrl( url ) {
 	if ( typeof url !== 'string' ) {
@@ -47,26 +50,28 @@ export default function safeImageUrl( url ) {
 		return url;
 	}
 
-	const { hostname, path, query } = parseUrl(
-		url,
-		/* parseQueryString */ false,
-		/* slashesDenoteHost */ true
-	);
+	const urlType = determineUrlType( url );
 
-	if ( REGEXP_A8C_HOST.test( hostname ) ) {
+	if ( urlType !== URL_TYPE.ABSOLUTE && urlType !== URL_TYPE.SCHEME_RELATIVE ) {
+		return null;
+	}
+
+	const parsedUrl = new URL( url, 'https://__domain__.invalid' );
+
+	if ( REGEXP_A8C_HOST.test( parsedUrl.hostname ) ) {
 		// Safely promote Automattic domains to HTTPS
 		return url.replace( /^http:/, 'https:' );
 	}
 
 	// If there's a query string, bail out because Photon doesn't support them on external URLs
-	if ( query && query.length > 0 ) {
+	if ( parsedUrl.search !== '' ) {
 		return null;
 	}
 
 	// Photon doesn't support SVGs
-	if ( endsWith( path, '.svg' ) ) {
+	if ( parsedUrl.pathname.endsWith( '.svg' ) ) {
 		return null;
 	}
 
-	return photon( url );
+	return photon( format( url, urlType ) );
 }

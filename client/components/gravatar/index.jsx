@@ -4,8 +4,6 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import url from 'url';
-import { parse, stringify } from 'qs';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
 import classnames from 'classnames';
@@ -22,13 +20,6 @@ import { getUserTempGravatar } from 'state/current-user/gravatar-status/selector
 import './style.scss';
 
 export class Gravatar extends Component {
-	constructor() {
-		super( ...arguments );
-		this.state = {
-			failedToLoad: false,
-		};
-	}
-
 	static propTypes = {
 		user: PropTypes.object,
 		size: PropTypes.number,
@@ -46,22 +37,29 @@ export class Gravatar extends Component {
 		size: 32,
 	};
 
+	state = { failedToLoad: false };
+
 	getResizedImageURL( imageURL ) {
 		const { imgSize } = this.props;
 		imageURL = imageURL || 'https://www.gravatar.com/avatar/0';
-		const parsedURL = url.parse( imageURL );
-		const query = parse( parsedURL.query );
 
-		if ( /^([-a-zA-Z0-9_]+\.)*(gravatar.com)$/.test( parsedURL.hostname ) ) {
-			query.s = imgSize;
-			query.d = 'mm';
-		} else {
-			// assume photon
-			query.resize = imgSize + ',' + imgSize;
+		let parsedURL;
+		try {
+			parsedURL = new URL( imageURL );
+		} catch {
+			// Invalid URL; return unmodified.
+			return imageURL;
 		}
 
-		parsedURL.search = stringify( query );
-		return url.format( parsedURL );
+		if ( /^([-a-zA-Z0-9_]+\.)*(gravatar.com)$/.test( parsedURL.hostname ) ) {
+			parsedURL.searchParams.set( 's', imgSize );
+			parsedURL.searchParams.set( 'd', 'mm' );
+		} else {
+			// assume photon
+			parsedURL.searchParams.set( 'resize', `${ imgSize },${ imgSize }` );
+		}
+
+		return parsedURL.href;
 	}
 
 	onError = () => this.setState( { failedToLoad: true } );
