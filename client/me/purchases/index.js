@@ -99,10 +99,13 @@ export default function( router ) {
 		clientRender
 	);
 
+	/**
+	 * The siteSelection middleware has been removed from this route.
+	 * No selected site!
+	 */
 	router(
 		paths.cancelPurchase( ':site', ':purchaseId' ),
 		sidebar,
-		siteSelection,
 		controller.cancelPurchase,
 		makeLayout,
 		clientRender
