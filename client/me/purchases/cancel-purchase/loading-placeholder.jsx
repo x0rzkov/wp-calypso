@@ -38,7 +38,7 @@ const CancelPurchaseLoadingPlaceholder = ( { purchaseId, siteSlug } ) => {
 				<Button className="cancel-purchase-loading-placeholder__cancel-button" />
 			</CompactCard>
 		</LoadingPlaceholder>
-		/* eslint-enable*/
+		/* eslint-enable */
 	);
 };
 
