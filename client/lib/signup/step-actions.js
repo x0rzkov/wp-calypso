@@ -15,6 +15,7 @@ import wpcom from 'lib/wp';
 import userFactory from 'lib/user';
 import { getSavedVariations } from 'lib/abtest';
 import analytics from 'lib/analytics';
+import { recordRegistration, recordSocialRegistration } from 'lib/signup/analytics';
 import {
 	updatePrivacyForDomain,
 	supportsPrivacyProtectionPurchase,
@@ -414,7 +415,7 @@ export function createAccount(
 					);
 				}
 
-				analytics.recordSocialRegistration();
+				recordSocialRegistration();
 
 				callback( undefined, pick( response, [ 'username', 'bearer_token' ] ) );
 			}
@@ -477,7 +478,7 @@ export function createAccount(
 					userData.ID;
 
 				// Fire after a new user registers.
-				analytics.recordRegistration( { flow: flowName } );
+				recordRegistration( flowName );
 				analytics.identifyUser( { ID: userId, username, email: userData.email } );
 
 				const providedDependencies = assign( { username }, bearerToken );
