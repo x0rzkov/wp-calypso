@@ -47,7 +47,7 @@
 		"classnames": "2.2.6"
 	},
 	"devDependencies": {
-		"@automattic/calypso-build": "^4.2.1",
+		"@automattic/calypso-build": "file:../../packages/calypso-build",
 		"@testing-library/jest-dom": "4.2.4",
 		"@testing-library/react": "9.3.2",
 		"@wordpress/jest-preset-default": "5.2.0",
