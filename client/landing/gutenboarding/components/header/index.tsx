@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { __ as NO__ } from '@wordpress/i18n';
+import { __ as NO__, __ } from '@wordpress/i18n';
 import { Button, Icon, IconButton } from '@wordpress/components';
 import { useDispatch, useSelect } from '@wordpress/data';
 import React, { FunctionComponent } from 'react';
@@ -109,7 +109,7 @@ const Header: FunctionComponent< Props > = ( {
 						isLarge
 						disabled={ isFilledFormValue( siteVertical ) || ! siteVertical }
 					>
-						{ NO__( 'Next' ) }
+						{ __( 'Next' ) }
 					</Button>
 				</div>
 				<div className="gutenboarding__header-group">
