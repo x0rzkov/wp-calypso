@@ -6,6 +6,7 @@ import { Button, Icon, IconButton } from '@wordpress/components';
 import { useDispatch, useSelect } from '@wordpress/data';
 import React, { FunctionComponent } from 'react';
 import { useDebounce } from 'use-debounce';
+import { translate, useTranslate } from 'i18n-calypso';
 
 /**
  * Internal dependencies
@@ -73,6 +74,8 @@ const Header: FunctionComponent< Props > = ( {
 		</span>
 	);
 
+	const ut = useTranslate();
+
 	return (
 		<div
 			className="gutenboarding__header"
@@ -104,6 +107,20 @@ const Header: FunctionComponent< Props > = ( {
 			</div>
 			<div className="gutenboarding__header-section">
 				<div className="gutenboarding__header-group">
+					<p>
+						<code>__( 'Manage' ): { __( 'Manage' ) }</code>
+						<br />
+						<code>translate( 'Manage' ): { translate( 'Manage' ) }</code>
+						<br />
+						<code>ut( 'Manage' ): { ut( 'Manage' ) }</code>
+						<br />
+						<code>__( 'Next' ): { __( 'Next' ) }</code>
+						<br />
+						<code>translate( 'Next' ): { translate( 'Next' ) }</code>
+						<br />
+						<code>ut( 'Next' ): { ut( 'Next' ) }</code>
+						<br />
+					</p>
 					<Button
 						isPrimary
 						isLarge
