@@ -249,7 +249,7 @@ function getInitialStoredState( initialReducer ) {
 	}
 
 	if ( 'development' === process.env.NODE_ENV ) {
-		window.resetState = () => clearAllState().then( () => location.reload( true ) );
+		window.resetState = () => clearAllState().then( () => window.location.reload( true ) );
 
 		if ( shouldAddSympathy() ) {
 			// eslint-disable-next-line no-console
