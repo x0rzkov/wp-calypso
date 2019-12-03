@@ -257,6 +257,7 @@ function useCreatePaymentMethods() {
 	const paypalMethod = useMemo(
 		() =>
 			createPayPalMethod( {
+				getSiteId: () => select( 'wpcom' )?.getSiteId?.(),
 				registerStore: registerStore,
 				makePayPalExpressRequest: mockPayPalExpressRequest,
 			} ),
