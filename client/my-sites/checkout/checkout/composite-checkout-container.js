@@ -8,7 +8,6 @@ import {
 	createStripeMethod,
 	createApplePayMethod,
 } from '@automattic/composite-checkout';
-import { mockPayPalExpressRequest } from '@automattic/composite-checkout-wpcom';
 import { useTranslate } from 'i18n-calypso';
 import debugFactory from 'debug';
 import { useSelector } from 'react-redux';
@@ -112,6 +111,10 @@ export function createCartFromLineItems( {
 			},
 		},
 	};
+}
+
+async function makePayPalExpressRequest( transactionData ) {
+	return wpcom.paypalExpressUrl( transactionData );
 }
 
 function getDomainDetails() {
@@ -264,7 +267,7 @@ function useCreatePaymentMethods() {
 				getSubdivisionCode: () => select( 'wpcom' )?.getContactInfo?.()?.state?.value,
 				getDomainDetails,
 				registerStore: registerStore,
-				makePayPalExpressRequest: mockPayPalExpressRequest,
+				makePayPalExpressRequest,
 			} ),
 		[]
 	);
