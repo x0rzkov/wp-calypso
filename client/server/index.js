@@ -6,15 +6,14 @@ require( '@babel/polyfill' );
 /**
  * External dependencies.
  */
-const boot = require( 'boot' );
+const boot = require( './boot' );
 const chalk = require( 'chalk' );
 const fs = require( 'fs' );
 
 /**
  * Internal dependencies
  */
-const pkg = require( './package.json' );
-const config = require( 'config' );
+const config = require( './config' );
 
 const start = Date.now();
 const protocol = process.env.PROTOCOL || config( 'protocol' );
@@ -31,8 +30,7 @@ function sendBootStatus( status ) {
 }
 
 console.log(
-	chalk.yellow( '%s booted in %dms - %s://%s:%s' ),
-	pkg.name,
+	chalk.yellow( 'wp-calypso booted in %dms - %s://%s:%s' ),
 	Date.now() - start,
 	protocol,
 	host,

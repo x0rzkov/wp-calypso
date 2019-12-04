@@ -25,14 +25,20 @@ const needsInstall = () => {
 		}
 
 		if ( ! lockfileTime ) {
-			//debug( '%s: true (no lockfile!)', packageDir );
+			console.log( 'Going to npm ci: there is no lockfile' );
 			return true;
 		}
 
 		const nodeModulesTime = fs.statSync( path.join( packageDir, 'node_modules' ) ).mtime;
-		return lockfileTime - nodeModulesTime > 1000; // In Windows, directory mtime has less precision than file mtime
+		const nodeModulesTooOld = lockfileTime - nodeModulesTime > 1000; // In Windows, directory mtime has less precision than file mtime
+		if ( nodeModulesTooOld ) {
+			console.log( 'Going to npm ci: node_modules too old', nodeModulesTime, lockfileTime );
+			return true;
+		}
+		console.log( 'No need to npm ci: node_modules is fresh', nodeModulesTime, lockfileTime );
+		return false;
 	} catch ( e ) {
-		//debug( e );
+		console.log( 'Failed to check node_modules freshness', e );
 		return true;
 	}
 };

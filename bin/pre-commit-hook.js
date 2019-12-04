@@ -13,7 +13,7 @@ console.log(
 );
 
 // Make quick pass over config files on every change
-require( '../server/config/validate-config-keys' );
+require( './validate-config-keys' );
 
 /**
  * Parses the output of a git diff command into file paths.

@@ -13,7 +13,7 @@ const fs = require( 'fs' );
 const fspath = require( 'path' );
 const lunr = require( 'lunr' );
 const globby = require( 'globby' );
-const root = fspath.dirname( fspath.join( __dirname, '..', '..' ) );
+const root = fspath.dirname( fspath.join( __dirname, '..', '..', '..' ) );
 
 function main() {
 	// Build a list of all .md files in allowed subdirectories...
@@ -23,12 +23,11 @@ function main() {
 		'client',
 		'config',
 		'docs',
-		'server',
 		'test',
 		'.github',
 	].map( dir => dir + '/**/*.md' );
 	// ... and the current directory
-	dirList.push( '*.md' );
+	// dirList.push( '*.md' );
 
 	const documents = globby.sync( dirList ).map( fileWithPath => {
 		return documentFromFile( root, fileWithPath );
@@ -37,7 +36,7 @@ function main() {
 		return doc.title && doc.body;
 	} );
 
-	writeSearchIndex( documents, 'server/devdocs/search-index.js' );
+	writeSearchIndex( documents, 'client/server/devdocs/search-index.js' );
 }
 
 function writeSearchIndex( documents, searchIndexPath ) {

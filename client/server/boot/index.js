@@ -2,17 +2,16 @@
  * Module dependencies
  */
 
-const path = require( 'path' ),
-	config = require( 'config' ),
-	chalk = require( 'chalk' ),
-	express = require( 'express' ),
-	cookieParser = require( 'cookie-parser' ),
-	userAgent = require( 'express-useragent' ),
-	morgan = require( 'morgan' ),
-	pages = require( 'pages' ),
-	pwa = require( 'pwa' ).default;
-
-const analytics = require( '../lib/analytics' ).default;
+const path = require( 'path' );
+const chalk = require( 'chalk' );
+const express = require( 'express' );
+const cookieParser = require( 'cookie-parser' );
+const userAgent = require( 'express-useragent' );
+const morgan = require( 'morgan' );
+const config = require( 'config' );
+const pages = require( 'server/pages' );
+const pwa = require( 'server/pwa' ).default;
+const analytics = require( 'server/lib/analytics' ).default;
 
 /**
  * Returns the server HTTP request handler "app".
@@ -29,7 +28,7 @@ function setup() {
 	app.use( userAgent.express() );
 
 	if ( 'development' === process.env.NODE_ENV ) {
-		require( 'bundler' )( app );
+		require( 'server/bundler' )( app );
 
 		// setup logger
 		app.use( morgan( 'dev' ) );
@@ -98,7 +97,7 @@ function setup() {
 	}
 
 	if ( config.isEnabled( 'devdocs' ) ) {
-		app.use( require( 'devdocs' )() );
+		app.use( require( 'server/devdocs' )() );
 	}
 
 	if ( config.isEnabled( 'desktop' ) ) {
@@ -108,7 +107,7 @@ function setup() {
 		);
 	}
 
-	app.use( require( 'api' )() );
+	app.use( require( 'server/api' )() );
 
 	// attach the pages module
 	app.use( pages() );

@@ -17,8 +17,8 @@ import 'prismjs/components/prism-scss';
  * Internal dependencies
  */
 import config from 'config';
-import searchIndex from 'devdocs/search-index';
-import componentsUsageStats from 'devdocs/components-usage-stats.json';
+import searchIndex from './search-index';
+import componentsUsageStats from './components-usage-stats.json';
 
 const root = fs.realpathSync( fspath.join( __dirname, '..', '..' ) ),
 	docsIndex = lunr.Index.load( searchIndex.index ),

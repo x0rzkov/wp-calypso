@@ -6,7 +6,7 @@
  * as its input, and writes the index to server/devdocs/components-usage-stats.json
  */
 var _ = require( 'lodash' ),
-	config = require( 'config' ),
+	config = require( 'server/config' ),
 	fs = require( 'fs' ),
 	fspath = require( 'path' ),
 	globby = require( 'globby' ),
