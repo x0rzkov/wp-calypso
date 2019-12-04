@@ -4,7 +4,7 @@
  * inherited from the Editor.
  *
  * @param {string} title Template title - transform css rule.
- * @return {*} Component
+ * @returns {*} Component
  */
 
 const PreviewTemplateTitle = ( { title, transform } ) => (

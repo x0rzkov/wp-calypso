@@ -87,10 +87,10 @@ class CommunityTranslator extends Component {
 
 	/**
 	 * Wraps translation in a DOM object and attaches `toString()` method in case in can't be rendered
-	 * @param { String } originalFromPage - original string
-	 * @param { String } displayedTranslationFromPage - translated string
-	 * @param  { Object } optionsFromPage - i18n.translate options
-	 * @returns {Object} DOM object
+	 * @param {string} originalFromPage - original string
+	 * @param {string} displayedTranslationFromPage - translated string
+	 * @param  {object} optionsFromPage - i18n.translate options
+	 * @returns {object} DOM object
 	 */
 	wrapTranslation( originalFromPage, displayedTranslationFromPage, optionsFromPage ) {
 		if ( ! isCommunityTranslatorEnabled() ) {

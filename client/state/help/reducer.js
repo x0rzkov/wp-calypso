@@ -10,9 +10,9 @@ import ticket from './ticket/reducer';
 /**
  * Tracks the site id for the selected site in the help/contact form
  *
- * @param  {Object} state  Current state
- * @param  {Object} action Action payload
- * @return {Object}        Updated state
+ * @param  {object} state  Current state
+ * @param  {object} action Action payload
+ * @returns {object}        Updated state
  */
 export const selectedSiteId = withoutPersistence( ( state = null, action ) => {
 	switch ( action.type ) {
@@ -26,9 +26,9 @@ export const selectedSiteId = withoutPersistence( ( state = null, action ) => {
 /**
  * Responsible for the help search results links
  *
- * @param  {Object} state  Current state
- * @param  {Object} action Action payload
- * @return {Object}        Updated state
+ * @param  {object} state  Current state
+ * @param  {object} action Action payload
+ * @returns {object}        Updated state
  */
 export const links = ( state = {}, action ) => {
 	switch ( action.type ) {

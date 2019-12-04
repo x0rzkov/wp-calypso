@@ -24,9 +24,9 @@ import { PUBLICIZE_SERVICES_LABEL_ICON } from './constants';
  * Returns a string of the moment format for the period. Supports store stats
  * isoWeek and shortened formats.
  *
- * @param  {String} period Stats query
- * @param  {String} date   Stats date
- * @return {Object}        Period range
+ * @param  {string} period Stats query
+ * @param  {string} date   Stats date
+ * @returns {object}        Period range
  */
 export function getPeriodFormat( period, date ) {
 	const strDate = date.toString();
@@ -47,9 +47,9 @@ export function getPeriodFormat( period, date ) {
  * Returns an object with the startOf and endOf dates
  * for the given stats period and date
  *
- * @param  {String} period Stats query
- * @param  {String} date   Stats date
- * @return {Object}        Period range
+ * @param  {string} period Stats query
+ * @param  {string} date   Stats date
+ * @returns {object}        Period range
  */
 export function rangeOfPeriod( period, date ) {
 	const format = getPeriodFormat( period, date );
@@ -77,8 +77,8 @@ export function rangeOfPeriod( period, date ) {
  * for the give stats query
  * It's allowed for queries without dates and for periods including today
  *
- * @param  {String} query  Stats query
- * @return {Boolean}       AutoRefresh allowed or not
+ * @param  {string} query  Stats query
+ * @returns {boolean}       AutoRefresh allowed or not
  */
 export function isAutoRefreshAllowedForQuery( query ) {
 	if ( ! query || ! query.date || ( ! query.unit && ! query.period ) ) {
@@ -91,8 +91,8 @@ export function isAutoRefreshAllowedForQuery( query ) {
 
 /**
  * Parse the avatar URL
- * @param  {String} avatarUrl Raw avatar URL
- * @return {String}           Parsed URL
+ * @param  {string} avatarUrl Raw avatar URL
+ * @returns {string}           Parsed URL
  */
 function parseAvatar( avatarUrl ) {
 	if ( ! avatarUrl ) {
@@ -105,9 +105,9 @@ function parseAvatar( avatarUrl ) {
 /**
  * Builds data into escaped array for CSV export
  *
- * @param  {Object} data   Normalized stats data object
- * @param  {String} parent Label of parent
- * @return {Array}         CSV Row
+ * @param  {object} data   Normalized stats data object
+ * @param  {string} parent Label of parent
+ * @returns {Array}         CSV Row
  */
 export function buildExportArray( data, parent = null ) {
 	if ( ! data || ! data.label || ! data.value ) {
@@ -132,8 +132,8 @@ export function buildExportArray( data, parent = null ) {
  * Returns a serialized stats query, used as the key in the
  * `state.stats.lists.items` and `state.stats.lists.requesting` state objects.
  *
- * @param  {Object} query    Stats query
- * @return {String}          Serialized stats query
+ * @param  {object} query    Stats query
+ * @returns {string}          Serialized stats query
  */
 export function getSerializedStatsQuery( query = {} ) {
 	return JSON.stringify( sortBy( toPairs( query ), pair => pair[ 0 ] ) );
@@ -143,8 +143,8 @@ export function getSerializedStatsQuery( query = {} ) {
  * Return delta data in a format used by 'extensions/woocommerce/app/store-stats`. The fields array is matched to
  * the data in a single object.
  *
- * @param {Object} payload - response
- * @return {array} - Array of data objects
+ * @param {object} payload - response
+ * @returns {Array} - Array of data objects
  */
 export function parseOrderDeltas( payload ) {
 	if (
@@ -175,7 +175,7 @@ export function parseOrderDeltas( payload ) {
  * @param {string} unit - day, week, month, year
  * @param {object} date - moment object
  * @param {object} localizedDate - moment object
- * @return {object} chart labels
+ * @returns {object} chart labels
  */
 export function getChartLabels( unit, date, localizedDate ) {
 	const validDate = moment.isMoment( date ) && date.isValid();
@@ -209,10 +209,10 @@ export function getChartLabels( unit, date, localizedDate ) {
  * Return data in a format used by 'components/chart`. The fields array is matched to
  * the data in a single object.
  *
- * @param {Object} payload - response
- * @param {array} nullAttributes - properties on data objects to be initialized with
+ * @param {object} payload - response
+ * @param {Array} nullAttributes - properties on data objects to be initialized with
  * a null value
- * @return {array} - Array of data objects
+ * @returns {Array} - Array of data objects
  */
 export function parseOrdersChartData( payload ) {
 	if ( ! payload || ! payload.data ) {
@@ -243,10 +243,10 @@ export function parseOrdersChartData( payload ) {
  * Return data in a format used by 'components/chart`. The fields array is matched to
  * the data in a single object.
  *
- * @param {Object} payload - response
- * @param {array} nullAttributes - properties on data objects to be initialized with
+ * @param {object} payload - response
+ * @param {Array} nullAttributes - properties on data objects to be initialized with
  * a null value
- * @return {array} - Array of data objects
+ * @returns {Array} - Array of data objects
  */
 export function parseChartData( payload, nullAttributes = [] ) {
 	if ( ! payload || ! payload.data ) {
@@ -283,7 +283,7 @@ export function parseChartData( payload, nullAttributes = [] ) {
  *
  * @param {string} unit - day, week, month or year
  * @param {string} period - period in shortened store sting format, eg '2017-W26'
- * @return {Object} - moment date object
+ * @returns {object} - moment date object
  */
 export function parseUnitPeriods( unit, period ) {
 	let splitYearWeek;
@@ -333,8 +333,8 @@ export const normalizers = {
 	/**
 	 * Returns a normalized payload from `/sites/{ site }/stats`
 	 *
-	 * @param  {Object} data    Stats data
-	 * @return {Object?}        Normalized stats data
+	 * @param  {object} data    Stats data
+	 * @returns {?object}        Normalized stats data
 	 */
 	stats( data ) {
 		if ( ! data || ! data.stats ) {
@@ -347,8 +347,8 @@ export const normalizers = {
 	/**
 	 * Returns a normalized payload from `/sites/{ site }/stats/insights`
 	 *
-	 * @param  {Object} data    Stats query
-	 * @return {Object?}        Normalized stats data
+	 * @param  {object} data    Stats query
+	 * @returns {?object}        Normalized stats data
 	 */
 	statsInsights: data => {
 		if ( ! data || ! isNumber( data.highest_day_of_week ) ) {
@@ -388,11 +388,11 @@ export const normalizers = {
 	/**
 	 * Returns a normalized payload from `/sites/{ site }/stats/top-posts`
 	 *
-	 * @param  {Object} data    Stats data
-	 * @param  {Object} query   Stats query
+	 * @param  {object} data    Stats data
+	 * @param  {object} query   Stats query
 	 * @param  {Int}    siteId  Site ID
 	 * @param  {Obejct} site    Site object
-	 * @return {Object?}        Normalized stats data
+	 * @returns {?object}        Normalized stats data
 	 */
 	statsTopPosts: ( data, query, siteId, site ) => {
 		if ( ! data || ! query.period || ! query.date ) {
@@ -441,9 +441,9 @@ export const normalizers = {
 	/**
 	 * Returns a normalized payload from `/sites/{ site }/stats/country-views`
 	 *
-	 * @param  {Object} data    Stats data
-	 * @param  {Object} query   Stats query
-	 * @return {Object?}        Normalized stats data
+	 * @param  {object} data    Stats data
+	 * @param  {object} query   Stats query
+	 * @returns {?object}        Normalized stats data
 	 */
 	statsCountryViews: ( data, query = {} ) => {
 		// parsing a country-views response requires a period and date
@@ -477,8 +477,8 @@ export const normalizers = {
 	/**
 	 * Returns a normalized statsPublicize array, ready for use in stats-module
 	 *
-	 * @param  {Object} data Stats data
-	 * @return {Array}       Parsed publicize data array
+	 * @param  {object} data Stats data
+	 * @returns {Array}       Parsed publicize data array
 	 */
 	statsPublicize( data = {} ) {
 		if ( ! data || ! data.services ) {
@@ -494,11 +494,11 @@ export const normalizers = {
 	/**
 	 * Returns a normalized statsVideoPlays array, ready for use in stats-module
 	 *
-	 * @param  {Object} data    Stats data
-	 * @param  {Object} query   Stats query
+	 * @param  {object} data    Stats data
+	 * @param  {object} query   Stats query
 	 * @param  {Int}    siteId  Site ID
 	 * @param  {Obejct} site    Site object
-	 * @return {Array}          Normalized stats data
+	 * @returns {Array}          Normalized stats data
 	 */
 	statsVideoPlays( data, query = {}, siteId, site ) {
 		if ( ! data || ! query.period || ! query.date ) {
@@ -528,8 +528,8 @@ export const normalizers = {
 	/**
 	 * Returns a normalized statsFollowers object
 	 *
-	 * @param  {Object} data    Stats data
-	 * @return {?Object}         Normalized stats data
+	 * @param  {object} data    Stats data
+	 * @returns {?object}         Normalized stats data
 	 */
 	statsFollowers( data ) {
 		if ( ! data ) {
@@ -638,8 +638,8 @@ export const normalizers = {
 	/**
 	 * Returns a normalized statsVideo array, ready for use in stats-module
 	 *
-	 * @param  {Object} payload Stats response payload
-	 * @return {Array}          Parsed data array
+	 * @param  {object} payload Stats response payload
+	 * @returns {Array}          Parsed data array
 	 */
 	statsVideo( payload ) {
 		if ( ! payload ) {
@@ -671,11 +671,11 @@ export const normalizers = {
 	/**
 	 * Returns a normalized statsTopAuthors array, ready for use in stats-module
 	 *
-	 * @param  {Object} data   Stats data
-	 * @param  {Object} query  Stats query
+	 * @param  {object} data   Stats data
+	 * @param  {object} query  Stats query
 	 * @param  {Int}    siteId Site ID
-	 * @param  {Object} site   Site Object
-	 * @return {Array}       Normalized stats data
+	 * @param  {object} site   Site Object
+	 * @returns {Array}       Normalized stats data
 	 */
 	statsTopAuthors( data, query = {}, siteId, site ) {
 		if ( ! data || ! query.period || ! query.date ) {
@@ -718,8 +718,8 @@ export const normalizers = {
 	/**
 	 * Returns a normalized statsTags array, ready for use in stats-module
 	 *
-	 * @param  {Object} data Stats data
-	 * @return {Array}       Parsed data array
+	 * @param  {object} data Stats data
+	 * @returns {Array}       Parsed data array
 	 */
 	statsTags( data ) {
 		if ( ! data || ! data.tags ) {

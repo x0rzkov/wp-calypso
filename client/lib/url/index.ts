@@ -27,9 +27,9 @@ export { default as format } from './format';
 /**
  * Removes given params from a url.
  *
- * @param  {String} url URL to be cleaned
- * @param  {Array|String}  paramsToOmit The collection of params or single param to reject
- * @return {String} Url less the omitted params.
+ * @param  {string} url URL to be cleaned
+ * @param  {Array|string}  paramsToOmit The collection of params or single param to reject
+ * @returns {string} Url less the omitted params.
  */
 export function omitUrlParams( url: Falsy, paramsToOmit: string | string[] ): null;
 export function omitUrlParams( url: URL, paramsToOmit: string | string[] ): URL;

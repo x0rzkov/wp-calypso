@@ -35,7 +35,7 @@ function dedupedGet( url ) {
  * Normally it should only serve as a helper function for `getLanguageFileUrl`,
  * but we export it here still in help with the test suite.
  *
- * @return {String} The path URL to the language files.
+ * @returns {string} The path URL to the language files.
  */
 export function getLanguageFilePathUrl() {
 	const protocol = typeof window === 'undefined' ? 'https://' : '//'; // use a protocol-relative path in the browser
@@ -47,11 +47,11 @@ export function getLanguageFilePathUrl() {
  * Get the language file URL for the given locale and file type, js or json.
  * A revision cache buster will be appended automatically if `setLangRevisions` has been called beforehand.
  *
- * @param {String} localeSlug A locale slug. e.g. fr, jp, zh-tw
- * @param {String} fileType The desired file type, js or json. Default to json.
- * @param {Object} languageRevisions An optional language revisions map. If it exists, the function will append the revision within as cache buster.
+ * @param {string} localeSlug A locale slug. e.g. fr, jp, zh-tw
+ * @param {string} fileType The desired file type, js or json. Default to json.
+ * @param {object} languageRevisions An optional language revisions map. If it exists, the function will append the revision within as cache buster.
  *
- * @return {String} A language file URL.
+ * @returns {string} A language file URL.
  */
 export function getLanguageFileUrl( localeSlug, fileType = 'json', languageRevisions = {} ) {
 	if ( ! includes( [ 'js', 'json' ], fileType ) ) {
@@ -238,7 +238,7 @@ function switchWebpackCSS( isRTL ) {
  *
  * @param {string} cssUrl URL of a CSS stylesheet to be loaded into the page
  * @param {Element} currentLink an existing <link> DOM element before which we want to insert the new one
- * @returns {Promise<String>} the new <link> DOM element after the CSS has been loaded
+ * @returns {Promise<string>} the new <link> DOM element after the CSS has been loaded
  */
 function loadCSS( cssUrl, currentLink ) {
 	return new Promise( resolve => {

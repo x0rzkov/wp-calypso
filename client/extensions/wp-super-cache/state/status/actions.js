@@ -12,9 +12,9 @@ import {
 /**
  * Returns an action object to be used in signalling that status have been received.
  *
- * @param  {Number} siteId Site ID
- * @param  {Object} status Status object
- * @return {Object} Action object
+ * @param  {number} siteId Site ID
+ * @param  {object} status Status object
+ * @returns {object} Action object
  */
 export const receiveStatus = ( siteId, status ) => ( {
 	type: WP_SUPER_CACHE_RECEIVE_STATUS,

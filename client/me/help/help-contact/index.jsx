@@ -433,7 +433,7 @@ class HelpContact extends React.Component {
 	 * Before determining which variation to assign, certain async data needs to be in place.
 	 * This function helps assess whether we're ready to say which variation the user should see.
 	 *
-	 * @returns {Boolean} Whether all the data is present to determine the variation to show
+	 * @returns {boolean} Whether all the data is present to determine the variation to show
 	 */
 	hasDataToDetermineVariation = () => {
 		const ticketReadyOrError =
@@ -468,7 +468,7 @@ class HelpContact extends React.Component {
 
 	/**
 	 * Get the view for the contact page.
-	 * @return {object} A JSX object that should be rendered
+	 * @returns {object} A JSX object that should be rendered
 	 */
 	getView = () => {
 		const { confirmation } = this.state;

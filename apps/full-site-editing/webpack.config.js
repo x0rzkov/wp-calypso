@@ -28,7 +28,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
  * @param  {object}  argv                          options map
  * @param  {string}  argv.source                   plugin slug
  * @param  {string}  argv.entry                    entry path
- * @return {object}                                webpack config
+ * @returns {object}                                webpack config
  */
 function getWebpackConfig( env = {}, argv = {} ) {
 	env.WP = true;

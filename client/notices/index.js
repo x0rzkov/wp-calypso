@@ -21,11 +21,11 @@ const notices = {
 	 * Creates a new notice
 	 * @private
 	 *
-	 * @param {String} text The text of the notices
-	 * @param {Object} options Options for the notice
-	 * @param {String} status The status
+	 * @param {string} text The text of the notices
+	 * @param {object} options Options for the notice
+	 * @param {string} status The status
 	 *
-	 * @return {object} notice
+	 * @returns {object} notice
 	 */
 	new: function( text, options, status ) {
 		// Set container
@@ -74,10 +74,10 @@ const notices = {
 	 * Helper function for creating a new "Success" notice
 	 * @public
 	 *
-	 * @param {String} text The text of the notices
-	 * @param {Object} options Options for the notice
+	 * @param {string} text The text of the notices
+	 * @param {object} options Options for the notice
 	 *
-	 * @return {object} notice
+	 * @returns {object} notice
 	 */
 	success: function( text, options ) {
 		options = options || {};
@@ -88,10 +88,10 @@ const notices = {
 	 * Helper function for creating a new "Error" notice
 	 * @public
 	 *
-	 * @param {String} text The text of the notices
-	 * @param {Object} options Options for the notice
+	 * @param {string} text The text of the notices
+	 * @param {object} options Options for the notice
 	 *
-	 * @return {object} notice
+	 * @returns {object} notice
 	 */
 	error: function( text, options ) {
 		options = options || {};
@@ -102,10 +102,10 @@ const notices = {
 	 * Helper function for creating a new general "Info" notice
 	 * @public
 	 *
-	 * @param {String} text The text of the notices
-	 * @param {Object} options Options for the notice
+	 * @param {string} text The text of the notices
+	 * @param {object} options Options for the notice
 	 *
-	 * @return {object} notice
+	 * @returns {object} notice
 	 */
 	info: function( text, options ) {
 		options = options || {};
@@ -116,10 +116,10 @@ const notices = {
 	 * Helper function for creating a new general "Info" notice
 	 * @public
 	 *
-	 * @param {String} text The text of the notices
-	 * @param {Object} options Options for the notice
+	 * @param {string} text The text of the notices
+	 * @param {object} options Options for the notice
 	 *
-	 * @return {object} notice
+	 * @returns {object} notice
 	 */
 	warning: function( text, options ) {
 		options = options || {};
@@ -152,7 +152,7 @@ const notices = {
 	/**
 	 * Callback handler to clear notices when a user leaves current page
 	 * @public
-	 * @param {Object} context The page context
+	 * @param {object} context The page context
 	 * @param {Function} next The continuation
 	 */
 	clearNoticesOnNavigation: function( context, next ) {

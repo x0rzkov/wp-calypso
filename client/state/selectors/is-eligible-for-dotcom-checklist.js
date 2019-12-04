@@ -11,10 +11,10 @@ import { isJetpackSite } from 'state/sites/selectors';
 import isAtomicSite from 'state/selectors/is-site-automated-transfer';
 
 /**
- * @param {Object} state Global state tree
- * @param {Number} siteId Site ID
- * @param {Object} cart object
- * @return {Boolean} True if current user is able to see the checklist
+ * @param {object} state Global state tree
+ * @param {number} siteId Site ID
+ * @param {object} cart object
+ * @returns {boolean} True if current user is able to see the checklist
  */
 export default function isEligibleForDotcomChecklist( state, siteId ) {
 	const siteOptions = getSiteOptions( state, siteId );

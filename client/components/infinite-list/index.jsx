@@ -322,7 +322,7 @@ export default class InfiniteList extends React.Component {
 	 * Returns a list of visible item indexes. This includes any items that are
 	 * partially visible in the viewport. Instance method that is called externally
 	 * (via a ref) by a parent component.
-	 * @param {Object} options - offset properties
+	 * @param {object} options - offset properties
 	 * @param {Integer} options.offsetTop - in pixels, 0 if unspecified
 	 * @param {Integer} options.offsetBottom - in pixels, 0 if unspecified
 	 * @returns {Array} This list of indexes
@@ -456,7 +456,7 @@ export default class InfiniteList extends React.Component {
 
 	/**
 	 * Determine whether context is available or still being rendered.
-	 * @return {bool} whether context is available
+	 * @returns {bool} whether context is available
 	 */
 	_contextLoaded() {
 		return this.props.context || this.props.context === false || ! ( 'context' in this.props );

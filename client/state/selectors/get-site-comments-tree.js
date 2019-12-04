@@ -11,10 +11,10 @@ import createSelector from 'lib/create-selector';
 /**
  * Returns a tree of loaded comments for a given site, filtered by status
  *
- * @param {Object} state Redux state
- * @param {Number} siteId Site for whose comments to find
- * @param {String} [status] Status to filter comments
- * @returns {Array<Object>} Comments tree for site, filtered by status
+ * @param {object} state Redux state
+ * @param {number} siteId Site for whose comments to find
+ * @param {string} [status] Status to filter comments
+ * @returns {Array<object>} Comments tree for site, filtered by status
  */
 export const getSiteCommentsTree = createSelector(
 	( state, siteId, status ) => {

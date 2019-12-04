@@ -30,7 +30,7 @@ export function getPathParts( path ) {
  * Checks if provided locale is a default one.
  *
  * @param {string} locale - locale slug (eg: 'fr')
- * @return {boolean} true when the default locale is provided
+ * @returns {boolean} true when the default locale is provided
  */
 export function isDefaultLocale( locale ) {
 	return locale === config( 'i18n_default_locale_slug' );
@@ -40,7 +40,7 @@ export function isDefaultLocale( locale ) {
  * Checks if provided locale has a parentLangSlug and is therefore a locale variant
  *
  * @param {string} locale - locale slug (eg: 'fr')
- * @return {boolean} true when the locale has a parentLangSlug
+ * @returns {boolean} true when the locale has a parentLangSlug
  */
 export function isLocaleVariant( locale ) {
 	if ( ! isString( locale ) ) {
@@ -67,7 +67,7 @@ export function isLocaleRtl( locale ) {
  * A 'translation set' refers to a collection of strings to be translated see:
  * https://glotpress.blog/the-manual/translation-sets/
  * @param {string} locale - locale slug (eg: 'fr')
- * @return {boolean} true when the locale is NOT a member of the exception list
+ * @returns {boolean} true when the locale is NOT a member of the exception list
  */
 export function canBeTranslated( locale ) {
 	return [ 'en', 'sr_latin' ].indexOf( locale ) === -1;
@@ -76,7 +76,7 @@ export function canBeTranslated( locale ) {
 /**
  * Return a list of all supported language slugs
  *
- * @return {Array} A list of all supported language slugs
+ * @returns {Array} A list of all supported language slugs
  */
 export function getLanguageSlugs() {
 	return map( languages, 'langSlug' );
@@ -84,8 +84,8 @@ export function getLanguageSlugs() {
 
 /**
  * Matches and returns language from config.languages based on the given localeSlug
- * @param  {String} langSlug locale slug of the language to match
- * @return {Object|undefined} An object containing the locale data or undefined.
+ * @param  {string} langSlug locale slug of the language to match
+ * @returns {object|undefined} An object containing the locale data or undefined.
  */
 export function getLanguage( langSlug ) {
 	if ( localeRegex.test( langSlug ) ) {
@@ -103,7 +103,7 @@ export function getLanguage( langSlug ) {
 /**
  * Assuming that locale is adding at the end of path, retrieves the locale if present.
  * @param {string} path - original path
- * @return {string|undefined} The locale slug if present or undefined
+ * @returns {string|undefined} The locale slug if present or undefined
  */
 export function getLocaleFromPath( path ) {
 	const urlParts = url.parse( path );
@@ -235,9 +235,9 @@ export function removeLocaleFromPath( path ) {
 /**
  * Filter out unexpected values from the given language revisions object.
  *
- * @param {Object} languageRevisions A candidate language revisions object for filtering.
+ * @param {object} languageRevisions A candidate language revisions object for filtering.
  *
- * @return {Object} A valid language revisions object derived from the given one.
+ * @returns {object} A valid language revisions object derived from the given one.
  */
 export function filterLanguageRevisions( languageRevisions ) {
 	const langSlugs = getLanguageSlugs();

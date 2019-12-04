@@ -44,7 +44,7 @@ const routesToIgnore = [
 /**
  * Existing libraries do not escape decimal encoded entities that php encodes, this handles that.
  * @param {string} str The string to decode
- * @return {string} The decoded string
+ * @returns {string} The decoded string
  */
 const unescapeDecimalEntities = str => {
 	return str.replace( /&#(\d+);/g, ( match, entity ) => String.fromCharCode( entity ) );
@@ -53,7 +53,7 @@ const unescapeDecimalEntities = str => {
 /**
  * Given an object from the api, prepare it to be consumed by the ui by transforming the shape of the data
  * @param {object} jitms The jitms to display from the api
- * @return {object} The transformed data to display
+ * @returns {object} The transformed data to display
  */
 const transformApiRequest = ( { data: jitms } ) =>
 	jitms.map( jitm => ( {
@@ -102,7 +102,7 @@ export const fetchJITM = action => ( dispatch, getState ) => {
  * Dismisses a jitm on the jetpack site, it returns nothing useful and will return no useful error, so we'll
  * fail and succeed silently.
  * @param {Abject} action The dismissal action
- * @return {Action} The HTTP fetch action
+ * @returns {Action} The HTTP fetch action
  */
 export const doDismissJITM = action =>
 	http(

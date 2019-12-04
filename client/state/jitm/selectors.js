@@ -9,7 +9,7 @@ import { getSectionName, getSelectedSiteId } from 'state/ui/selectors';
 /**
  * Get the list of available jitms for the current site/section
  * @param {object} state The application state
- * @return {array} An array of jitms
+ * @returns {Array} An array of jitms
  */
 export const getJITM = state =>
 	get(
@@ -21,7 +21,7 @@ export const getJITM = state =>
 /**
  * Get the top jitm available for the current site/section
  * @param {object} state Thee application state
- * @return {object} A jitm
+ * @returns {object} A jitm
  */
 export const getTopJITM = state => {
 	const jitms = getJITM( state );

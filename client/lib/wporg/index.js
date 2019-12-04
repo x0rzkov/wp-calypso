@@ -132,7 +132,7 @@ export function fetchPluginsList( options, callback ) {
  * Otherwise, will return a promise.
  *
  * @param {string}     themeId  The theme identifier.
- * @returns {Promise.<Object>}  A promise that returns a `theme` object
+ * @returns {Promise.<object>}  A promise that returns a `theme` object
  */
 export function fetchThemeInformation( themeId ) {
 	const query = {
@@ -149,11 +149,11 @@ export function fetchThemeInformation( themeId ) {
 /**
  * Get information about a given theme from the WordPress.org API.
  *
- * @param  {Object}        options         Theme query
- * @param  {String}        options.search  Search string
- * @param  {Number}        options.number  How many themes to return per page
- * @param  {Number}        options.page    Which page of matching themes to return
- * @returns {Promise.<Object>}             A promise that returns an object containing a `themes` array and an `info` object
+ * @param  {object}        options         Theme query
+ * @param  {string}        options.search  Search string
+ * @param  {number}        options.number  How many themes to return per page
+ * @param  {number}        options.page    Which page of matching themes to return
+ * @returns {Promise.<object>}             A promise that returns an object containing a `themes` array and an `info` object
  */
 export function fetchThemesList( options = {} ) {
 	const { search, page, number } = options;

@@ -351,7 +351,7 @@ export class Checkout extends React.Component {
 	 * Purchases are of the format { [siteId]: [ { productId: ... } ] }
 	 * so we need to flatten them to get a list of purchases
 	 *
-	 * @param {Object} purchases keyed by siteId { [siteId]: [ { productId: ... } ] }
+	 * @param {object} purchases keyed by siteId { [siteId]: [ { productId: ... } ] }
 	 * @returns {Array} of product objects [ { productId: ... }, ... ]
 	 */
 	flattenPurchases( purchases ) {

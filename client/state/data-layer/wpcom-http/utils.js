@@ -13,7 +13,7 @@ import warn from 'lib/warn';
 /**
  * Returns response data from an HTTP request success action if available
  *
- * @param {Object} action may contain HTTP response data
+ * @param {object} action may contain HTTP response data
  * @returns {*|undefined} response data if available
  */
 export const getData = action => get( action, 'meta.dataLayer.data', undefined );
@@ -21,7 +21,7 @@ export const getData = action => get( action, 'meta.dataLayer.data', undefined )
 /**
  * Returns error data from an HTTP request failure action if available
  *
- * @param {Object} action may contain HTTP response error data
+ * @param {object} action may contain HTTP response error data
  * @returns {*|undefined} error data if available
  */
 export const getError = action => get( action, 'meta.dataLayer.error', undefined );
@@ -29,13 +29,13 @@ export const getError = action => get( action, 'meta.dataLayer.error', undefined
 /**
  * Returns (response) headers data from an HTTP request action if available
  *
- * @param   {Object}      action Request action for which to retrieve HTTP response headers
+ * @param   {object}      action Request action for which to retrieve HTTP response headers
  * @returns {*|undefined}        Headers data if available
  */
 export const getHeaders = action => get( action, 'meta.dataLayer.headers', undefined );
 
 /**
- * @typedef {Object} ProgressData
+ * @typedef {object} ProgressData
  * @property {number} loaded Number of bytes already transferred
  * @property {number} total  Total number of bytes to transfer
  */
@@ -43,8 +43,8 @@ export const getHeaders = action => get( action, 'meta.dataLayer.headers', undef
 /**
  * Returns progress data from an HTTP request progress action if available
  *
- * @param  {Object} action          may contain HTTP progress data
- * @return {ProgressData|undefined} Progress data if available
+ * @param  {object} action          may contain HTTP progress data
+ * @returns {ProgressData|undefined} Progress data if available
  */
 export const getProgress = action => get( action, 'meta.dataLayer.progress', undefined );
 
@@ -148,7 +148,7 @@ export const trackRequests = next => ( store, action ) => {
  *   fromApi    :: ResponseData -> TransformedData throws TransformerError|SchemaError
  *
  * @param {Function} middleware intercepts requests moving through the system
- * @param {Object} options object with named parameters:
+ * @param {object} options object with named parameters:
  * @param {Function} options.fetch called if action lacks response meta; should create HTTP request
  * @param {Function} options.onSuccess called if the action meta includes response data
  * @param {Function} options.onError called if the action meta includes error data

@@ -12,8 +12,8 @@ import { getOAuth2Client } from 'state/oauth2-clients/selectors';
 /**
  * Returns the ID of the current OAuth2 client.
  *
- * @param  {Object}  state  Global state tree
- * @return {?Number}        Current OAuth2 client ID
+ * @param  {object}  state  Global state tree
+ * @returns {?number}        Current OAuth2 client ID
  */
 export function getCurrentOAuth2ClientId( state ) {
 	return get( state, 'ui.oauth2Clients.currentClientId' );
