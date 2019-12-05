@@ -18,13 +18,14 @@ const getPromises = {};
 /**
  * De-duplicates repeated GET fetches of the same URL while one is taking place.
  * Once it's finished, it'll allow for the same request to be done again.
+ *
  * @param {string} url The URL to fetch
  *
  * @returns {Promise} The fetch promise.
  */
 function dedupedGet( url ) {
 	if ( ! ( url in getPromises ) ) {
-		getPromises[ url ] = fetch( url ).finally( () => delete getPromises[ url ] );
+		getPromises[ url ] = window.fetch( url ).finally( () => delete getPromises[ url ] );
 	}
 
 	return getPromises[ url ];
@@ -35,7 +36,7 @@ function dedupedGet( url ) {
  * Normally it should only serve as a helper function for `getLanguageFileUrl`,
  * but we export it here still in help with the test suite.
  *
- * @return {String} The path URL to the language files.
+ * @returns {string} The path URL to the language files.
  */
 export function getLanguageFilePathUrl() {
 	const protocol = typeof window === 'undefined' ? 'https://' : '//'; // use a protocol-relative path in the browser
@@ -47,11 +48,11 @@ export function getLanguageFilePathUrl() {
  * Get the language file URL for the given locale and file type, js or json.
  * A revision cache buster will be appended automatically if `setLangRevisions` has been called beforehand.
  *
- * @param {String} localeSlug A locale slug. e.g. fr, jp, zh-tw
- * @param {String} fileType The desired file type, js or json. Default to json.
- * @param {Object} languageRevisions An optional language revisions map. If it exists, the function will append the revision within as cache buster.
+ * @param {string} localeSlug A locale slug. e.g. fr, jp, zh-tw
+ * @param {string} fileType The desired file type, js or json. Default to json.
+ * @param {object} languageRevisions An optional language revisions map. If it exists, the function will append the revision within as cache buster.
  *
- * @return {String} A language file URL.
+ * @returns {string} A language file URL.
  */
 export function getLanguageFileUrl( localeSlug, fileType = 'json', languageRevisions = {} ) {
 	if ( ! includes( [ 'js', 'json' ], fileType ) ) {
@@ -64,8 +65,22 @@ export function getLanguageFileUrl( localeSlug, fileType = 'json', languageRevis
 	return typeof revision === 'number' ? fileUrl + `?v=${ revision }` : fileUrl;
 }
 
-function setLocaleInDOM( localeSlug, isRTL ) {
-	document.documentElement.lang = localeSlug;
+function getHtmlLangAttribute() {
+	// translation of this string contains the desired HTML attribute value
+	const slug = i18n.translate( 'html_lang_attribute' );
+
+	// Hasn't been translated? Likely the default `en` locale. Return the default i18n slug.
+	if ( slug === 'html_lang_attribute' ) {
+		return i18n.getLocaleSlug();
+	}
+
+	return slug;
+}
+
+function setLocaleInDOM() {
+	const htmlLangAttribute = getHtmlLangAttribute();
+	const isRTL = i18n.isRtl();
+	document.documentElement.lang = htmlLangAttribute;
 	document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
 	document.body.classList[ isRTL ? 'add' : 'remove' ]( 'rtl' );
 
@@ -105,32 +120,25 @@ export default function switchLocale( localeSlug ) {
 		return;
 	}
 
-	const { langSlug: targetLocaleSlug, parentLangSlug } = language;
+	lastRequestedLocale = localeSlug;
 
-	// variant lang objects contain references to their parent lang, which is what we want to tell the browser we're running
-	const domLocaleSlug = parentLangSlug || targetLocaleSlug;
-
-	lastRequestedLocale = targetLocaleSlug;
-
-	if ( isDefaultLocale( targetLocaleSlug ) ) {
-		i18n.configure( { defaultLocaleSlug: targetLocaleSlug } );
-		setLocaleInDOM( domLocaleSlug, !! language.rtl );
+	if ( isDefaultLocale( localeSlug ) ) {
+		i18n.configure( { defaultLocaleSlug: localeSlug } );
+		setLocaleInDOM();
 	} else {
-		getLanguageFile( targetLocaleSlug ).then(
+		getLanguageFile( localeSlug ).then(
 			// Success.
 			body => {
 				if ( body ) {
 					// Handle race condition when we're requested to switch to a different
 					// locale while we're in the middle of request, we should abandon result
-					if ( targetLocaleSlug !== lastRequestedLocale ) {
+					if ( localeSlug !== lastRequestedLocale ) {
 						return;
 					}
 
 					i18n.setLocale( body );
-
-					setLocaleInDOM( domLocaleSlug, !! language.rtl );
-
-					loadUserUndeployedTranslations( targetLocaleSlug );
+					setLocaleInDOM();
+					loadUserUndeployedTranslations( localeSlug );
 				}
 			},
 			// Failure.
@@ -144,11 +152,11 @@ export default function switchLocale( localeSlug ) {
 }
 
 export function loadUserUndeployedTranslations( currentLocaleSlug ) {
-	if ( ! location || ! location.search ) {
+	if ( typeof document === 'undefined' || ! document.location.search ) {
 		return;
 	}
 
-	const parsedURL = parseUrl( location.search, true );
+	const parsedURL = parseUrl( document.location.search, true );
 
 	const {
 		'load-user-translations': username,
@@ -193,7 +201,7 @@ export function loadUserUndeployedTranslations( currentLocaleSlug ) {
 		query,
 	} );
 
-	return fetch( requestUrl, {
+	return window.fetch( requestUrl, {
 		headers: { Accept: 'application/json' },
 		credentials: 'include',
 	} )
@@ -238,7 +246,7 @@ function switchWebpackCSS( isRTL ) {
  *
  * @param {string} cssUrl URL of a CSS stylesheet to be loaded into the page
  * @param {Element} currentLink an existing <link> DOM element before which we want to insert the new one
- * @returns {Promise<String>} the new <link> DOM element after the CSS has been loaded
+ * @returns {Promise<string>} the new <link> DOM element after the CSS has been loaded
  */
 function loadCSS( cssUrl, currentLink ) {
 	return new Promise( resolve => {
