@@ -96,8 +96,8 @@ const BASE_PARSE_URL = 'http://__domain__.invalid';
  * getFileExtension( new window.File( [''], 'example.gif' ) );
  * // All examples return 'gif'
  *
- * @param   {(string|File|object)} media Media object or string
- * @returns {string}                     File extension
+ * @param   {(string|window.File|object)} media Media object or string
+ * @returns {string} File extension
  */
 export function getFileExtension( media ) {
 	let extension;
@@ -144,8 +144,8 @@ export function getFileExtension( media ) {
  * getMimeType( { mime_type: 'image/gif' } );
  * // All examples return 'image'
  *
- * @param   {(string|File|object)} media Media object or mime type string
- * @returns {string}       The MIME type prefix
+ * @param   {(string|window.File|object)} media Media object or mime type string
+ * @returns {string} The MIME type prefix
  */
 export function getMimePrefix( media ) {
 	const mimeType = getMimeType( media );
@@ -171,8 +171,8 @@ export function getMimePrefix( media ) {
  * getMimeType( { mime_type: 'image/gif' } );
  * // All examples return 'image/gif'
  *
- * @param   {(string|File|object)} media Media object or string
- * @returns {string}                     Mime type of the media, if known
+ * @param   {(string|window.File|object)} media Media object or string
+ * @returns {string} Mime type of the media, if known
  */
 export function getMimeType( media ) {
 	if ( ! media ) {
@@ -494,6 +494,8 @@ export function canUserDeleteItem( item, user, site ) {
  * @param {number} quality extracted image quality
  */
 export function canvasToBlob( canvas, callback, type, quality ) {
+	const { HTMLCanvasElement, Blob, atob } = window;
+
 	if ( ! HTMLCanvasElement.prototype.toBlob ) {
 		Object.defineProperty( HTMLCanvasElement.prototype, 'toBlob', {
 			value: function( polyfillCallback, polyfillType, polyfillQuality ) {
@@ -539,8 +541,8 @@ export function isTransientPreviewable( item ) {
  * Returns an object describing a transient media item which can be used in
  * optimistic rendering prior to media persistence to server.
  *
- * @param   {(string|object|Blob|File)} file URL or File object
- * @returns {object}                         Transient media object
+ * @param   {(string|object|window.Blob|window.File)} file URL or File object
+ * @returns {object} Transient media object
  */
 export function createTransientMedia( file ) {
 	const transientMedia = {

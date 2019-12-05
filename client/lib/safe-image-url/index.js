@@ -16,6 +16,7 @@ import format from 'lib/url/format';
  */
 let REGEX_EXEMPT_URL;
 if ( 'object' === typeof location ) {
+	// eslint-disable-next-line no-undef
 	REGEX_EXEMPT_URL = new RegExp( `^(/(?!/)|data:image/[^;]+;|blob:${ location.origin }/)` );
 } else {
 	REGEX_EXEMPT_URL = /^(\/(?!\/)|data:image\/[^;]+;)/;
