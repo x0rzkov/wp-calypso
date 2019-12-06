@@ -75,6 +75,7 @@ module.exports = {
 		// frequently caused bugs where we used an undefined variable and ESLint didn't warn us.
 		window: true,
 		document: true,
+		fetch: true,
 		// this is our custom function that's transformed by babel into either a dynamic import or a normal require
 		asyncRequire: true,
 		// this is the SHA of the current commit. Injected at boot in a script tag.

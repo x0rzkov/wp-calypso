@@ -28,7 +28,7 @@ const isAllHeadersValid = headers =>
 			typeof headerPair[ 1 ] === 'string'
 	);
 
-/***
+/**
  * Handler to perform an http request based on `HTTP_REQUEST` action parameters:
  * {String} url the url to request
  * {String} method the method we should use in the request: GET, POST etc.
@@ -40,7 +40,7 @@ const isAllHeadersValid = headers =>
  * {Action} onFailure action to dispatch on failure with error meta
  *
  * @param {Function} dispatch redux store dispatch
- * @param {Object} action dispatched action we need to handle
+ * @param action Dispatched action we need to handle
  */
 export const httpHandler = async ( { dispatch }, action ) => {
 	const {
@@ -80,6 +80,7 @@ export const httpHandler = async ( { dispatch }, action ) => {
 
 	let response, json;
 	try {
+		// eslint thinks fetch is not defined
 		response = await fetch( queryString.length ? `${ url }?${ queryString }` : url, {
 			method,
 			headers: fetchHeaders,
