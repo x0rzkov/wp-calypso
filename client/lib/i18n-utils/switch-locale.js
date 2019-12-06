@@ -201,10 +201,11 @@ export function loadUserUndeployedTranslations( currentLocaleSlug ) {
 		query,
 	} );
 
-	return window.fetch( requestUrl, {
-		headers: { Accept: 'application/json' },
-		credentials: 'include',
-	} )
+	return window
+		.fetch( requestUrl, {
+			headers: { Accept: 'application/json' },
+			credentials: 'include',
+		} )
 		.then( res => res.json() )
 		.then( translations => i18n.addTranslations( translations ) );
 }
@@ -245,7 +246,7 @@ function switchWebpackCSS( isRTL ) {
  * Loads a CSS stylesheet into the page.
  *
  * @param {string} cssUrl URL of a CSS stylesheet to be loaded into the page
- * @param {Element} currentLink an existing <link> DOM element before which we want to insert the new one
+ * @param {window.HTMLElement} currentLink an existing <link> DOM element before which we want to insert the new one
  * @returns {Promise<string>} the new <link> DOM element after the CSS has been loaded
  */
 function loadCSS( cssUrl, currentLink ) {
