@@ -81,6 +81,8 @@ const props = {
 	translate: x => x,
 };
 
+global.document = { location: {} };
+
 describe( 'PluginMeta basic tests', () => {
 	test( 'should not blow up and have proper CSS class', () => {
 		const comp = shallow( <PluginMeta { ...props } /> );
