@@ -68,6 +68,9 @@ export const FEATURE_UNLIMITED_STORAGE = 'unlimited-storage';
 export const FEATURE_COMMUNITY_SUPPORT = 'community-support';
 export const FEATURE_EMAIL_SUPPORT = 'email-support';
 export const FEATURE_EMAIL_LIVE_CHAT_SUPPORT = 'email-live-chat-support';
+export const FEATURE_EMAIL_LIVE_CHAT_SUPPORT_BUSINESS_DAYS =
+	'email-live-chat-support-business-days';
+export const FEATURE_EMAIL_LIVE_CHAT_SUPPORT_ALL_DAYS = 'email-live-chat-support-all-days';
 export const FEATURE_EMAIL_FORWARDING_EXTENDED_LIMIT = 'email-forwarding-extended-limit';
 export const FEATURE_PREMIUM_SUPPORT = 'priority-support';
 export const FEATURE_BASIC_DESIGN = 'basic-design';
@@ -193,8 +196,8 @@ export function isBestValue( plan ) {
 /**
  * Return estimated duration of given PLAN_TERM in days
  *
- * @param {String} term TERM_ constant
- * @return {Number} Term duration
+ * @param {string} term TERM_ constant
+ * @returns {number} Term duration
  */
 export function getTermDuration( term ) {
 	switch ( term ) {
