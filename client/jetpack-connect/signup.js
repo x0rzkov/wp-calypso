@@ -230,7 +230,7 @@ export class JetpackSignup extends Component {
 							{ auth_approved: true },
 							window.location.href
 						) }
-						submitButtonText={ this.props.translate( 'Continue with email' ) }
+						submitButtonText={ this.props.translate( 'Create your account' ) }
 						submitForm={ this.handleSubmitSignup }
 						submitting={ isCreatingAccount }
 						suggestedUsername=""
