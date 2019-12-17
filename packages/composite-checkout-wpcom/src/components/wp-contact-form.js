@@ -15,7 +15,7 @@ import Field from './field';
 import { SummaryLine, SummaryDetails, SummarySpacerLine } from './summary-details';
 import { LeftColumn, RightColumn } from './ie-fallback';
 
-export default function WPContactForm( { summary, isComplete, isActive } ) {
+export default function WPContactForm( { summary, isComplete, isActive, CountrySelectMenu } ) {
 	const isDomainFieldsVisible = useHasDomainsInCart();
 	const contactInfo = useSelect( select => select( 'wpcom' ).getContactInfo() );
 	const isDomainContactSame = useSelect( select => select( 'wpcom' ).isDomainContactSame() );
@@ -37,7 +37,12 @@ export default function WPContactForm( { summary, isComplete, isActive } ) {
 				<AddressFields section="contact" contactInfo={ contactInfo } setters={ setters } />
 			) }
 
-			<TaxFields section="contact" taxInfo={ contactInfo } setters={ setters } />
+			<TaxFields
+				section="contact"
+				taxInfo={ contactInfo }
+				setters={ setters }
+				CountrySelectMenu={ CountrySelectMenu }
+			/>
 
 			<PhoneNumberField
 				id="contact-phone-number"
@@ -331,7 +336,7 @@ function VatIdField() {
 	);
 }
 
-function TaxFields( { section, taxInfo, setters } ) {
+function TaxFields( { section, taxInfo, setters, CountrySelectMenu } ) {
 	const translate = useTranslate();
 	const { postalCode, country } = taxInfo;
 	const { setContactField } = setters;
@@ -355,6 +360,7 @@ function TaxFields( { section, taxInfo, setters } ) {
 			</LeftColumn>
 
 			<RightColumn>
+				<CountrySelectMenu translate={ translate } />
 				<Field
 					id={ section + '-country' }
 					type="text"
