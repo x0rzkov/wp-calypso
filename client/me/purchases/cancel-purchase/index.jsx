@@ -114,7 +114,6 @@ class CancelPurchase extends React.Component {
 		const { purchase } = this.props;
 		const {
 			refundText,
-			expiryDateValid,
 			expiryDate,
 			expiryDateFormat,
 			refundAmount,
@@ -141,8 +140,7 @@ class CancelPurchase extends React.Component {
 			} );
 		}
 
-		const expirationDate =
-			expiryDateValid && this.props.moment( expiryDate, expiryDateFormat ).format( 'LL' );
+		const expirationDate = this.props.moment( expiryDate, expiryDateFormat ).format( 'LL' );
 
 		if ( isDomainRegistration( purchase ) ) {
 			return this.props.translate(
