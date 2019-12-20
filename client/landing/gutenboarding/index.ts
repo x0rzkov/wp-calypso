@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import '../../boot/polyfills';
 import page from 'page';
 
 /**
