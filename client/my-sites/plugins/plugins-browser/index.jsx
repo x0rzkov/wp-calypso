@@ -47,6 +47,7 @@ import NoPermissionsError from 'my-sites/plugins/no-permissions-error';
 import Button from 'components/button';
 import { isBusiness, isEcommerce, isEnterprise, isPremium } from 'lib/products-values';
 import { TYPE_BUSINESS } from 'lib/plans/constants';
+import { INSTALL_PLUGIN } from 'state/plugins/installed/constants';
 import { findFirstSimilarPlanKey } from 'lib/plans';
 import Banner from 'components/banner';
 import { isEnabled } from 'config';
@@ -566,7 +567,7 @@ export class PluginsBrowser extends Component {
 					'redirect_to',
 					`/checkout/thank-you/${ siteSlug }/:receiptId?` +
 						encodeQueryParameters( [
-							[ 'intent', 'install_plugin' ],
+							[ 'intent', INSTALL_PLUGIN ],
 							[ 'site_unlaunched_before_upgrade', isSiteUnlaunched ? 'true' : 'false' ],
 							[ 'redirect_to', document.location.pathname ],
 						] ),
