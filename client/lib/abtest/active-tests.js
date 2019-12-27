@@ -1,4 +1,3 @@
-/** @format */
 export default {
 	cartNudgeUpdateToPremium: {
 		datestamp: '20180917',
@@ -72,14 +71,6 @@ export default {
 		defaultVariation: 'noOffer',
 		allowExistingUsers: true,
 	},
-	popularPlanBy: {
-		datestamp: '20190529',
-		variations: {
-			siteType: 0,
-			customerType: 100,
-		},
-		defaultVariation: 'siteType',
-	},
 	skippableDomainStep: {
 		datestamp: '20290717',
 		variations: {
@@ -89,20 +80,11 @@ export default {
 		defaultVariation: 'notSkippable',
 		allowExistingUsers: true,
 	},
-	verticalSuggestedThemes: {
-		datestamp: '20191031',
-		variations: {
-			control: 90,
-			test: 10,
-		},
-		defaultVariation: 'control',
-		allowExistingUsers: true,
-	},
 	passwordlessSignup: {
-		datestamp: '20191029',
+		datestamp: '20291029',
 		variations: {
-			passwordless: 10,
-			default: 90,
+			passwordless: 0,
+			default: 100,
 		},
 		defaultVariation: 'default',
 	},
@@ -115,13 +97,54 @@ export default {
 		defaultVariation: 'control',
 		allowExistingUsers: true,
 	},
-	userStepRecaptcha: {
-		datestamp: '20191111',
+	domainStepCopyUpdates: {
+		datestamp: '20191121',
 		variations: {
-			show: 50,
+			variantShowUpdates: 90,
+			control: 10,
+		},
+		defaultVariation: 'control',
+		allowExistingUsers: true,
+	},
+	domainStepMoveParagraph: {
+		datestamp: '20191216',
+		variations: {
+			variantMoveParagraph: 50,
 			control: 50,
 		},
 		defaultVariation: 'control',
 		allowExistingUsers: true,
+	},
+	nonEnglishDomainStepCopyUpdates: {
+		datestamp: '20191219',
+		variations: {
+			variantShowUpdates: 50,
+			control: 50,
+		},
+		defaultVariation: 'control',
+		allowExistingUsers: true,
+		localeTargets: 'any',
+		localeExceptions: [ 'en' ],
+	},
+	domainSuggestionsWithHints: {
+		datestamp: '20191220',
+		variations: {
+			variation2_front: 0,
+			variation3_front: 50,
+			variation4_front: 25,
+			variation5_front: 25,
+		},
+		defaultVariation: 'variation2_front',
+	},
+	showBusinessPlanPopular: {
+		datestamp: '20191220',
+		variations: {
+			variantShowBizPopular: 50,
+			control: 50,
+		},
+		defaultVariation: 'control',
+		allowExistingUsers: true,
+		localeTargets: 'any',
+		localeExceptions: [ 'en' ],
 	},
 };

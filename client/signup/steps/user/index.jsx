@@ -1,4 +1,3 @@
-/** @format */
 /**
  * External dependencies
  */
@@ -12,7 +11,6 @@ import classNames from 'classnames';
 /**
  * Internal dependencies
  */
-import { abtest } from 'lib/abtest';
 import { isCrowdsignalOAuth2Client, isWooOAuth2Client } from 'lib/oauth2-clients';
 import StepWrapper from 'signup/step-wrapper';
 import SignupForm from 'blocks/signup-form';
@@ -24,7 +22,6 @@ import { getSuggestedUsername } from 'state/signup/optional-dependencies/selecto
 import { recordTracksEvent } from 'state/analytics/actions';
 import { saveSignupStep, submitSignupStep } from 'state/signup/progress/actions';
 import { WPCC } from 'lib/url/support';
-import { initGoogleRecaptcha, recordGoogleRecaptchaAction } from 'lib/analytics/ad-tracking';
 import config from 'config';
 import AsyncLoad from 'components/async-load';
 import WooCommerceConnectCartHeader from 'extensions/woocommerce/components/woocommerce-connect-cart-header';
@@ -49,11 +46,6 @@ export class UserStep extends Component {
 	state = {
 		submitting: false,
 		subHeaderText: '',
-		recaptchaClientId: null,
-		isLoadingRecaptcha:
-			'onboarding' === this.props.flowName && 'show' === abtest( 'userStepRecaptcha' )
-				? true
-				: false,
 	};
 
 	UNSAFE_componentWillReceiveProps( nextProps ) {
@@ -81,12 +73,6 @@ export class UserStep extends Component {
 	}
 
 	componentDidMount() {
-		if ( 'onboarding' === this.props.flowName && 'show' === abtest( 'userStepRecaptcha' ) ) {
-			initGoogleRecaptcha( 'g-recaptcha', 'calypso/signup/pageLoad' ).then(
-				this.saveRecaptchaToken
-			);
-		}
-
 		this.props.saveSignupStep( { stepName: this.props.stepName } );
 	}
 
@@ -157,18 +143,6 @@ export class UserStep extends Component {
 		this.setState( { subHeaderText } );
 	}
 
-	saveRecaptchaToken = ( { token, clientId } ) => {
-		this.setState( {
-			isLoadingRecaptcha: false,
-			recaptchaClientId: clientId,
-		} );
-
-		this.props.saveSignupStep( {
-			stepName: this.props.stepName,
-			recaptchaToken: typeof token === 'string' ? token : undefined,
-		} );
-	};
-
 	save = form => {
 		this.props.saveSignupStep( {
 			stepName: this.props.stepName,
@@ -197,7 +171,7 @@ export class UserStep extends Component {
 		this.props.goToNextStep();
 	};
 
-	submitForm = ( form, userData, analyticsData ) => {
+	submitForm = async ( form, userData, analyticsData ) => {
 		const formWithoutPassword = {
 			...form,
 			password: {
@@ -208,29 +182,21 @@ export class UserStep extends Component {
 
 		this.props.recordTracksEvent( 'calypso_signup_user_step_submit', analyticsData );
 
-		const recaptchaPromise =
-			'onboarding' === this.props.flowName && 'show' === abtest( 'userStepRecaptcha' )
-				? recordGoogleRecaptchaAction( this.state.recaptchaClientId, 'calypso/signup/formSubmit' )
-				: Promise.resolve();
-
-		recaptchaPromise.then( token => {
-			this.submit( {
-				userData,
-				form: formWithoutPassword,
-				queryArgs: ( this.props.initialContext && this.props.initialContext.query ) || {},
-				recaptchaToken: token || undefined,
-			} );
+		this.submit( {
+			userData,
+			form: formWithoutPassword,
+			queryArgs: ( this.props.initialContext && this.props.initialContext.query ) || {},
 		} );
 	};
 
 	/**
 	 * Handle Social service authentication flow result (OAuth2 or OpenID Connect)
 	 *
-	 * @param {String} service      The name of the social service
-	 * @param {String} access_token An OAuth2 acccess token
-	 * @param {String} id_token     (Optional) a JWT id_token which contains the signed user info
+	 * @param {string} service      The name of the social service
+	 * @param {string} access_token An OAuth2 acccess token
+	 * @param {string} id_token     (Optional) a JWT id_token which contains the signed user info
 	 *                              So our server doesn't have to request the user profile on its end.
-	 * @param {Object} userData     (Optional) extra user information that can be used to create a new account
+	 * @param {object} userData     (Optional) extra user information that can be used to create a new account
 	 */
 	handleSocialResponse = ( service, access_token, id_token = null, userData = null ) => {
 		this.submit( {
@@ -363,7 +329,6 @@ export class UserStep extends Component {
 					{ ...omit( this.props, [ 'translate' ] ) }
 					redirectToAfterLoginUrl={ this.getRedirectToAfterLoginUrl() }
 					disabled={ this.userCreationStarted() }
-					disableSubmitButton={ this.state.isLoadingRecaptcha }
 					submitting={ this.userCreationStarted() }
 					save={ this.save }
 					submitForm={ this.submitForm }
@@ -373,12 +338,7 @@ export class UserStep extends Component {
 					isSocialSignupEnabled={ isSocialSignupEnabled }
 					socialService={ socialService }
 					socialServiceResponse={ socialServiceResponse }
-					recaptchaClientId={ this.state.recaptchaClientId }
-					showRecaptchaToS={
-						'onboarding' === this.props.flowName && 'show' === abtest( 'userStepRecaptcha' )
-					}
 				/>
-				<div id="g-recaptcha"></div>
 			</>
 		);
 	}

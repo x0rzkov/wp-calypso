@@ -39,8 +39,7 @@ import {
 } from 'lib/analytics/ad-tracking';
 import { updateQueryParamsTracking } from 'lib/analytics/sem';
 import { statsdTimingUrl, statsdCountingUrl } from 'lib/analytics/statsd';
-import { affiliateReferral as trackAffiliateReferral } from 'state/refer/actions';
-import { reduxDispatch } from 'lib/redux-bridge';
+import { trackAffiliateReferral } from './refer';
 import { getFeatureSlugFromPageUrl } from './feature-slug';
 
 /**
@@ -52,7 +51,6 @@ const blockedTracksDebug = debug( 'calypso:analytics:blockedTracks' );
 const pageViewDebug = debug( 'calypso:analytics:pageview' );
 const mcDebug = debug( 'calypso:analytics:mc' );
 const gaDebug = debug( 'calypso:analytics:ga' );
-const referDebug = debug( 'calypso:analytics:refer' );
 const queueDebug = debug( 'calypso:analytics:queue' );
 const tracksDebug = debug( 'calypso:analytics:tracks' );
 const statsdDebug = debug( 'calypso:analytics:statsd' );
@@ -83,7 +81,7 @@ if ( typeof window !== 'undefined' ) {
 function getUrlParameter( name ) {
 	name = name.replace( /[[]/g, '\\[' ).replace( /[\]]/g, '\\]' );
 	const regex = new RegExp( '[\\?&]' + name + '=([^&#]*)' );
-	const results = regex.exec( location.search );
+	const results = regex.exec( window.location.search );
 	return results === null ? '' : decodeURIComponent( results[ 1 ].replace( /\+/g, ' ' ) );
 }
 
@@ -99,7 +97,7 @@ function createRandomId( randomBytesLength = 9 ) {
 		randomBytes = times( randomBytesLength, () => Math.floor( Math.random() * 256 ) );
 	}
 
-	return btoa( String.fromCharCode.apply( String, randomBytes ) );
+	return window.btoa( String.fromCharCode.apply( String, randomBytes ) );
 }
 
 function checkForBlockedTracks() {
@@ -188,7 +186,7 @@ if ( typeof window !== 'undefined' ) {
 const analytics = {
 	initialize: function( currentUser, superProps ) {
 		// Update super props.
-		if ( 'object' === typeof superProps ) {
+		if ( 'function' === typeof superProps ) {
 			initializeDebug( 'superProps', superProps );
 			_superProps = superProps;
 		}
@@ -214,7 +212,7 @@ const analytics = {
 
 			if ( config( 'mc_analytics_enabled' ) ) {
 				const uriComponent = buildQuerystring( group, name );
-				new Image().src =
+				new window.Image().src =
 					document.location.protocol +
 					'//pixel.wp.com/g.gif?v=wpcom-no-pv' +
 					uriComponent +
@@ -233,7 +231,7 @@ const analytics = {
 
 			if ( config( 'mc_analytics_enabled' ) ) {
 				const uriComponent = buildQuerystringNoPrefix( group, name );
-				new Image().src =
+				new window.Image().src =
 					document.location.protocol +
 					'//pixel.wp.com/g.gif?v=wpcom' +
 					uriComponent +
@@ -577,7 +575,7 @@ const analytics = {
 		/**
 		 * Returns the anoymous id stored in the `tk_ai` cookie
 		 *
-		 * @returns {String} - The Tracks anonymous user id
+		 * @returns {string} - The Tracks anonymous user id
 		 */
 		anonymousUserId: function() {
 			const cookies = cookie.parse( document.cookie );
@@ -600,7 +598,7 @@ const analytics = {
 				);
 
 				const imgUrl = statsdTimingUrl( featureSlug, eventType, duration );
-				new Image().src = imgUrl;
+				new window.Image().src = imgUrl;
 			}
 		},
 
@@ -613,7 +611,7 @@ const analytics = {
 				);
 
 				const imgUrl = statsdCountingUrl( featureSlug, eventType, increment );
-				new Image().src = imgUrl;
+				new window.Image().src = imgUrl;
 			}
 		},
 	},
@@ -710,8 +708,7 @@ const analytics = {
 					page: parsedUrl.host + parsedUrl.pathname,
 				} );
 
-				referDebug( 'Recording affiliate referral.', { affiliateId, campaignId, subId, referrer } );
-				reduxDispatch( trackAffiliateReferral( { affiliateId, campaignId, subId, referrer } ) );
+				trackAffiliateReferral( { affiliateId, campaignId, subId, referrer } );
 			}
 		},
 	},
@@ -759,7 +756,7 @@ const analytics = {
  * @see isGoogleAnalyticsAllowed
  *
  * @param  {Function} func Google Analytics tracking function
- * @return {Function}      Wrapped function
+ * @returns {Function} Wrapped function
  */
 export function makeGoogleAnalyticsTrackingFunction( func ) {
 	return function( ...args ) {

@@ -9,7 +9,7 @@ references:
     CIRCLE_TEST_REPORTS: /tmp/test_results
 
   docker-image: &docker-image
-    - image: circleci/node:10.16.3-browsers
+    - image: circleci/node:12.13.1-browsers
 
   setup-results-and-artifacts: &setup-results-and-artifacts
     name: Create Directories for Results and Artifacts
@@ -215,6 +215,14 @@ jobs:
           # Report but don't fail the build (`|| exit 0`)
           command: npm run typecheck || exit 0
 
+  typecheck-strict:
+    <<: *defaults
+    parallelism: 1
+    steps:
+      - prepare
+      - run:
+          name: TypeScript strict typecheck of individual subprojects
+          command: npm run typecheck -- --project client/landing/gutenboarding
 
   lint-and-translate:
     <<: *defaults
@@ -357,7 +365,8 @@ jobs:
             # Run jest on the CircleCI split for parallelization across containers
             # Avoid using `--split-by=timings` here so that per-node Jest caches
             # receive a stable sub-set of tests for optimal cache usage.
-            JEST_JUNIT_OUTPUT="$CIRCLE_TEST_REPORTS/client/results.xml" \
+            JEST_JUNIT_OUTPUT_DIR="$CIRCLE_TEST_REPORTS/client" \
+            JEST_JUNIT_OUTPUT_NAME="results.xml" \
               ./node_modules/.bin/jest                                  \
                 --cacheDirectory="$HOME/jest-cache"                     \
                 --ci                                                    \
@@ -380,7 +389,8 @@ jobs:
       - run:
           name: Run Integration Tests
           command: |
-            JEST_JUNIT_OUTPUT="$CIRCLE_TEST_REPORTS/integration/results.xml" \
+            JEST_JUNIT_OUTPUT_DIR="$CIRCLE_TEST_REPORTS/integration" \
+            JEST_JUNIT_OUTPUT_NAME="results.xml" \
               ./node_modules/.bin/jest                     \
                 --cacheDirectory="$HOME/jest-cache"        \
                 --ci                                       \
@@ -402,7 +412,8 @@ jobs:
           name: Run Package Tests
           no_output_timeout: 2m
           command: |
-            JEST_JUNIT_OUTPUT="$CIRCLE_TEST_REPORTS/packages/results.xml" \
+            JEST_JUNIT_OUTPUT_DIR="$CIRCLE_TEST_REPORTS/packages" \
+            JEST_JUNIT_OUTPUT_NAME="results.xml" \
               ./node_modules/.bin/jest                                    \
                 --cacheDirectory="$HOME/jest-cache"                       \
                 --ci                                                      \
@@ -424,7 +435,8 @@ jobs:
           name: Run Server Tests
           no_output_timeout: 2m
           command: |
-            JEST_JUNIT_OUTPUT="$CIRCLE_TEST_REPORTS/server/results.xml" \
+            JEST_JUNIT_OUTPUT_DIR="$CIRCLE_TEST_REPORTS/server" \
+            JEST_JUNIT_OUTPUT_NAME="results.xml" \
               ./node_modules/.bin/jest                                  \
                 --cacheDirectory="$HOME/jest-cache"                     \
                 --ci                                                    \
@@ -545,7 +557,9 @@ jobs:
               echo 'PRs from external authors cannot run on calypso.live'
               exit 1
             fi
-      - prepare
+      - restore_cache: *restore-git-cache
+      - checkout
+      # Don't bother updating the git cache here, it would be the second time in the workflow
       - run:
           name: Wait for calypso.live build
           command: ./test/e2e/scripts/wait-for-running-branch.sh
@@ -673,6 +687,9 @@ workflows:
       - typecheck:
           requires:
             - setup
+      - typecheck-strict:
+          requires:
+            - setup
       - wait-calypso-live:
           requires:
             - test-client
@@ -775,7 +792,7 @@ workflows:
           name: test-e2e-jetpack
           requires:
             - setup
-          test-flags: '-j'
+          test-flags: '-j -s desktop'
           jetpack-host: 'PRESSABLEBLEEDINGEDGE'
           test-target: 'JETPACK'
           slack-webhook: '$SLACK_JP'

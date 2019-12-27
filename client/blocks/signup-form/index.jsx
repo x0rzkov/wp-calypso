@@ -33,7 +33,7 @@ import { isCrowdsignalOAuth2Client, isWooOAuth2Client } from 'lib/oauth2-clients
 import wpcom from 'lib/wp';
 import config from 'config';
 import analytics from 'lib/analytics';
-import Button from 'components/button';
+import { Button } from '@automattic/components';
 import FormInputValidation from 'components/forms/form-input-validation';
 import FormLabel from 'components/forms/form-label';
 import FormPasswordInput from 'components/forms/form-password-input';
@@ -96,7 +96,6 @@ class SignupForm extends Component {
 		isSocialSignupEnabled: PropTypes.bool,
 		locale: PropTypes.string,
 		positionInFlow: PropTypes.number,
-		recaptchaClientId: PropTypes.number,
 		save: PropTypes.func,
 		signupDependencies: PropTypes.object,
 		step: PropTypes.object,
@@ -104,7 +103,6 @@ class SignupForm extends Component {
 		submitting: PropTypes.bool,
 		suggestedUsername: PropTypes.string.isRequired,
 		translate: PropTypes.func.isRequired,
-		showRecaptchaToS: PropTypes.bool,
 
 		// Connected props
 		oauth2Client: PropTypes.object,
@@ -116,7 +114,6 @@ class SignupForm extends Component {
 		displayUsernameInput: true,
 		flowName: '',
 		isSocialSignupEnabled: false,
-		showRecaptchaToS: false,
 	};
 
 	state = {
@@ -186,12 +183,12 @@ class SignupForm extends Component {
 		return userExistsError;
 	}
 
-	/***
+	/**
 	 * If the step is invalid because we had an error that the user exists,
 	 * we should prompt user with a request to connect his social account
 	 * to his existing WPCOM account
 	 *
-	 * @param {Object} props react component props that has step info
+	 * @param {object} props react component props that has step info
 	 */
 	maybeRedirectToSocialConnect( props ) {
 		const userExistsError = this.getUserExistsError( props );
@@ -229,10 +226,11 @@ class SignupForm extends Component {
 		const sanitizedUsername = this.sanitizeUsername( fields.username );
 
 		if ( fields.email !== sanitizedEmail || fields.username !== sanitizedUsername ) {
-			onComplete( {
+			const sanitizedFormValues = Object.assign( fields, {
 				email: sanitizedEmail,
 				username: sanitizedUsername,
 			} );
+			onComplete( sanitizedFormValues );
 		}
 	};
 
@@ -832,7 +830,7 @@ class SignupForm extends Component {
 	}
 
 	footerLink() {
-		const { flowName, showRecaptchaToS, translate } = this.props;
+		const { flowName, translate } = this.props;
 
 		const logInUrl = config.isEnabled( 'login/native-login-links' )
 			? this.getLoginLink()
@@ -853,25 +851,6 @@ class SignupForm extends Component {
 						/>
 					) }
 				</LoggedOutFormLinks>
-				{ showRecaptchaToS && (
-					<div className="signup-form__recaptcha-tos">
-						<LoggedOutFormLinks>
-							<p>
-								{ translate(
-									'This site is protected by reCAPTCHA and the Google {{a1}}Privacy Policy{{/a1}} and {{a2}}Terms of Service{{/a2}} apply.',
-									{
-										components: {
-											a1: <a href="https://policies.google.com/privacy" />,
-											a2: <a href="https://policies.google.com/terms" />,
-										},
-										comment:
-											'English wording comes from Google: https://developers.google.com/recaptcha/docs/faq#id-like-to-hide-the-recaptcha-badge.-what-is-allowed',
-									}
-								) }
-							</p>
-						</LoggedOutFormLinks>
-					</div>
-				) }
 			</>
 		);
 	}
@@ -956,7 +935,7 @@ class SignupForm extends Component {
 			We are testing whether a passwordless account creation and login improves signup rate in the `onboarding` flow
 		*/
 		if (
-			this.props.flowName === 'onboarding' &&
+			( this.props.flowName === 'onboarding' || this.props.flowName === 'test-fse' ) &&
 			'passwordless' === abtest( 'passwordlessSignup' )
 		) {
 			const logInUrl = config.isEnabled( 'login/native-login-links' )
@@ -964,11 +943,7 @@ class SignupForm extends Component {
 				: localizeUrl( config( 'login_url' ), this.props.locale );
 
 			return (
-				<div
-					className={ classNames( 'signup-form', this.props.className, {
-						'is-showing-recaptcha-tos': this.props.showRecaptchaToS,
-					} ) }
-				>
+				<div className={ classNames( 'signup-form', this.props.className ) }>
 					{ this.getNotice() }
 					<PasswordlessSignupForm
 						step={ this.props.step }
@@ -979,7 +954,6 @@ class SignupForm extends Component {
 						logInUrl={ logInUrl }
 						disabled={ this.props.disabled }
 						disableSubmitButton={ this.props.disableSubmitButton }
-						recaptchaClientId={ this.props.recaptchaClientId }
 					/>
 					{ this.props.isSocialSignupEnabled && ! this.userCreationComplete() && (
 						<SocialSignupForm
@@ -995,11 +969,7 @@ class SignupForm extends Component {
 		}
 
 		return (
-			<div
-				className={ classNames( 'signup-form', this.props.className, {
-					'is-showing-recaptcha-tos': this.props.showRecaptchaToS,
-				} ) }
-			>
+			<div className={ classNames( 'signup-form', this.props.className ) }>
 				{ this.getNotice() }
 
 				<LoggedOutForm onSubmit={ this.handleSubmit } noValidate={ true }>
@@ -1039,7 +1009,7 @@ export default connect(
 		oauth2Client: getCurrentOAuth2Client( state ),
 		sectionName: getSectionName( state ),
 		isJetpackWooCommerceFlow:
-			'woocommerce-setup-wizard' === get( getCurrentQueryArguments( state ), 'from' ),
+			'woocommerce-onboarding' === get( getCurrentQueryArguments( state ), 'from' ),
 		wccomFrom: get( getCurrentQueryArguments( state ), 'wccom-from' ),
 	} ),
 	{

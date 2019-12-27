@@ -36,6 +36,7 @@ import getPrimarySiteId from 'state/selectors/get-primary-site-id';
 import hasJetpackSites from 'state/selectors/has-jetpack-sites';
 import isDomainOnlySite from 'state/selectors/is-domain-only-site';
 import isSiteAutomatedTransfer from 'state/selectors/is-site-automated-transfer';
+import isSiteMigrationInProgress from 'state/selectors/is-site-migration-in-progress';
 import {
 	getCustomizerUrl,
 	getSite,
@@ -63,7 +64,6 @@ import {
 	SIDEBAR_SECTION_MANAGE,
 } from './constants';
 import canSiteViewAtomicHosting from 'state/selectors/can-site-view-atomic-hosting';
-
 /**
  * Style dependencies
  */
@@ -361,7 +361,15 @@ export class MySitesSidebar extends Component {
 	}
 
 	plan() {
-		const { path, site, translate, canUserManageOptions } = this.props;
+		const {
+			canUserManageOptions,
+			isAtomicSite,
+			isJetpack,
+			isVip,
+			path,
+			site,
+			translate,
+		} = this.props;
 
 		if ( ! site ) {
 			return null;
@@ -397,6 +405,9 @@ export class MySitesSidebar extends Component {
 			} );
 		}
 
+		// Hide the plan name only for Jetpack sites that are not Atomic or VIP.
+		const displayPlanName = ! ( isJetpack && ! isAtomicSite && ! isVip );
+
 		/* eslint-disable wpcalypso/jsx-classname-namespace */
 		return (
 			<li className={ linkClass } data-tip-target={ tipTarget }>
@@ -405,7 +416,9 @@ export class MySitesSidebar extends Component {
 					<span className="menu-link-text" data-e2e-sidebar="Plan">
 						{ translate( 'Plan', { context: 'noun' } ) }
 					</span>
-					<span className="sidebar__menu-link-secondary-text">{ planName }</span>
+					{ displayPlanName && (
+						<span className="sidebar__menu-link-secondary-text">{ planName }</span>
+					) }
 				</a>
 			</li>
 		);
@@ -507,9 +520,9 @@ export class MySitesSidebar extends Component {
 
 		return (
 			<SidebarItem
-				label={ translate( 'SFTP & MySQL' ) }
-				selected={ itemLinkMatches( '/hosting-admin', path ) }
-				link={ `/hosting-admin${ siteSuffix }` }
+				label={ translate( 'Hosting Configuration' ) }
+				selected={ itemLinkMatches( '/hosting-config', path ) }
+				link={ `/hosting-config${ siteSuffix }` }
 				onNavigate={ this.trackHostingClick }
 				preloadSectionName="hosting"
 				expandSection={ this.expandManageSection }
@@ -688,6 +701,10 @@ export class MySitesSidebar extends Component {
 			);
 		}
 
+		if ( this.props.isMigrationInProgress ) {
+			return <SidebarMenu />;
+		}
+
 		const tools = !! this.tools() || !! this.marketing() || !! this.earn() || !! this.activity();
 		const manage = !! this.upgrades() || !! this.users() || !! this.siteSettings();
 
@@ -808,6 +825,7 @@ function mapStateToProps( state ) {
 		isToolsSectionOpen,
 		isManageSectionOpen,
 		isAtomicSite: !! isSiteAutomatedTransfer( state, selectedSiteId ),
+		isMigrationInProgress: !! isSiteMigrationInProgress( state, selectedSiteId ),
 		isVip: isVipSite( state, selectedSiteId ),
 		showCustomizerLink: ! isSiteUsingFullSiteEditing( state, selectedSiteId ),
 		siteId,
@@ -817,14 +835,11 @@ function mapStateToProps( state ) {
 	};
 }
 
-export default connect(
-	mapStateToProps,
-	{
-		recordGoogleEvent,
-		recordTracksEvent,
-		setLayoutFocus,
-		setNextLayoutFocus,
-		expandSection,
-		toggleSection,
-	}
-)( localize( MySitesSidebar ) );
+export default connect( mapStateToProps, {
+	recordGoogleEvent,
+	recordTracksEvent,
+	setLayoutFocus,
+	setNextLayoutFocus,
+	expandSection,
+	toggleSection,
+} )( localize( MySitesSidebar ) );

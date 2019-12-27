@@ -1,5 +1,3 @@
-/** @format */
-
 /**
  * External dependencies
  */
@@ -13,12 +11,11 @@ import React, { Component, Fragment } from 'react';
 /**
  * Internal Dependencies
  */
+import AsyncLoad from 'components/async-load';
 import { abtest } from 'lib/abtest';
 import analytics from 'lib/analytics';
 import { applyTestFiltersToPlansList } from 'lib/plans';
-import Button from 'components/button';
-import Card from 'components/card';
-import CompactCard from 'components/card/compact';
+import { Button, Card, CompactCard } from '@automattic/components';
 import config from 'config';
 import {
 	cardProcessorSupportsUpdates,
@@ -61,6 +58,8 @@ import {
 	isConciergeSession,
 } from 'lib/products-values';
 import { getSite, isRequestingSites } from 'state/sites/selectors';
+import { JETPACK_BACKUP_PRODUCTS } from 'lib/products-values/constants';
+import { JETPACK_PLANS } from 'lib/plans/constants';
 import Main from 'components/main';
 import PlanIcon from 'components/plans/plan-icon';
 import PlanPrice from 'my-sites/plan-price';
@@ -484,6 +483,13 @@ class ManagePurchase extends Component {
 						selectedSite={ site }
 						purchase={ purchase }
 						editCardDetailsPath={ editCardDetailsPath }
+					/>
+					<AsyncLoad
+						require="blocks/product-plan-overlap-notices"
+						placeholder={ null }
+						plans={ JETPACK_PLANS }
+						products={ JETPACK_BACKUP_PRODUCTS }
+						siteId={ siteId }
 					/>
 					{ this.renderPurchaseDetail() }
 				</Main>

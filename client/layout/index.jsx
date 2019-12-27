@@ -1,5 +1,3 @@
-/** @format */
-
 /**
  * External dependencies
  */
@@ -16,6 +14,7 @@ import classnames from 'classnames';
 import AsyncLoad from 'components/async-load';
 import MasterbarLoggedIn from 'layout/masterbar/logged-in';
 import GlobalNotices from 'components/global-notices';
+import HtmlIsIframeClassname from 'layout/html-is-iframe-classname';
 import notices from 'notices';
 import config from 'config';
 import OfflineStatus from 'layout/offline-status';
@@ -43,7 +42,6 @@ import DocumentHead from 'components/data/document-head';
 import AppBanner from 'blocks/app-banner';
 import GdprBanner from 'blocks/gdpr-banner';
 import { getPreference } from 'state/preferences/selectors';
-import JITM from 'blocks/jitm';
 import KeyboardShortcutsMenu from 'lib/keyboard-shortcuts/menu';
 import SupportUser from 'support/support-user';
 import { isCommunityTranslatorEnabled } from 'components/community-translator/utils';
@@ -131,6 +129,7 @@ class Layout extends Component {
 		return (
 			<div className={ sectionClass }>
 				<BodySectionCssClass group={ this.props.sectionGroup } section={ this.props.sectionName } />
+				<HtmlIsIframeClassname />
 				<DocumentHead />
 				<QuerySites primaryAndRecent />
 				{ this.props.shouldQueryAllSites && <QuerySites allSites /> }
@@ -147,7 +146,13 @@ class Layout extends Component {
 				<LayoutLoader />
 				{ this.props.isOffline && <OfflineStatus /> }
 				<div id="content" className="layout__content">
-					{ config.isEnabled( 'jitms' ) && <JITM /> }
+					{ config.isEnabled( 'jitms' ) && this.props.isEligibleForJITM && (
+						<AsyncLoad
+							require="blocks/jitm"
+							messagePath={ `calypso:${ this.props.sectionName }:admin_notices` }
+							sectionName={ this.props.sectionName }
+						/>
+					) }
 					<GlobalNotices id="notices" notices={ notices.list } />
 					<div id="secondary" className="layout__secondary" role="navigation">
 						{ this.props.secondary }
@@ -171,6 +176,7 @@ class Layout extends Component {
 				{ ( 'jetpack-connect' !== this.props.sectionName ||
 					this.props.currentRoute === '/jetpack/new' ) &&
 					this.props.currentRoute !== '/log-in/jetpack' &&
+					this.props.currentRoute !== '/me/account/closed' &&
 					'happychat' !== this.props.sectionName && (
 						<AsyncLoad require="blocks/inline-help" placeholder={ null } />
 					) }
@@ -189,14 +195,15 @@ export default connect( state => {
 	const siteId = getSelectedSiteId( state );
 	const isJetpackLogin = startsWith( currentRoute, '/log-in/jetpack' );
 	const isJetpack = isJetpackSite( state, siteId ) && ! isAtomicSite( state, siteId );
-	const noMasterbarForRoute = isJetpackLogin;
+	const noMasterbarForRoute = isJetpackLogin || currentRoute === '/me/account/closed';
 	const noMasterbarForSection = 'signup' === sectionName || 'jetpack-connect' === sectionName;
 	const isJetpackMobileFlow = 'jetpack-connect' === sectionName && !! retrieveMobileRedirect();
 	const isJetpackWooCommerceFlow =
 		( 'jetpack-connect' === sectionName || 'login' === sectionName ) &&
-		'woocommerce-setup-wizard' === get( getCurrentQueryArguments( state ), 'from' );
+		'woocommerce-onboarding' === get( getCurrentQueryArguments( state ), 'from' );
 	const oauth2Client = getCurrentOAuth2Client( state );
 	const wccomFrom = get( getCurrentQueryArguments( state ), 'wccom-from' );
+	const isEligibleForJITM = [ 'stats', 'plans' ].indexOf( sectionName ) >= 0;
 
 	return {
 		masterbarIsHidden:
@@ -205,6 +212,7 @@ export default connect( state => {
 		isJetpackLogin,
 		isJetpackWooCommerceFlow,
 		isJetpackMobileFlow,
+		isEligibleForJITM,
 		oauth2Client,
 		wccomFrom,
 		isSupportSession: isSupportSession( state ),

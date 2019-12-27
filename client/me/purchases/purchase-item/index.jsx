@@ -1,4 +1,3 @@
-/** @format */
 /**
  * External dependencies
  */
@@ -10,7 +9,7 @@ import { localize } from 'i18n-calypso';
 /**
  * Internal dependencies
  */
-import CompactCard from 'components/card/compact';
+import { CompactCard } from '@automattic/components';
 import {
 	getDisplayName,
 	isExpired,
@@ -36,6 +35,7 @@ import {
 import Notice from 'components/notice';
 import PlanIcon from 'components/plans/plan-icon';
 import Gridicon from 'components/gridicon';
+import { withLocalizedMoment } from 'components/localized-moment';
 import { managePurchase } from '../paths';
 import TrackComponentView from 'lib/analytics/track-component-view';
 import { getPlanTermLabel } from 'lib/plans';
@@ -266,4 +266,4 @@ PurchaseItem.propTypes = {
 	isJetpack: PropTypes.bool,
 };
 
-export default localize( PurchaseItem );
+export default localize( withLocalizedMoment( PurchaseItem ) );

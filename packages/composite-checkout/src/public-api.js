@@ -3,7 +3,9 @@
  */
 import {
 	CheckoutProvider,
-	useCheckoutHandlers,
+	useEvents,
+	usePaymentComplete,
+	useMessages,
 	useCheckoutRedirects,
 } from './components/checkout-provider';
 import CheckoutStep from './components/checkout-step';
@@ -14,44 +16,67 @@ import {
 	OrderReviewSection,
 } from './components/order-review-line-items';
 import Checkout from './components/checkout';
+import CheckoutModal from './components/checkout-modal';
 import { renderDisplayValueMarkdown } from './lib/render';
 import { usePaymentMethod, usePaymentMethodId, useAllPaymentMethods } from './lib/payment-methods';
-import { useLineItems, useTotal, useHasDomainsInCart } from './lib/line-items';
-import { useLocalize } from './lib/localize';
+import { useLineItems, useTotal } from './lib/line-items';
 import {
 	createRegistry,
-	useRegistry,
-	useRegisterStore,
-	useSelect,
 	useDispatch,
+	usePaymentData,
+	useRegisterStore,
+	useRegistry,
+	useSelect,
 } from './lib/registry';
-import WPCheckoutOrderSummary from './components/wp-checkout-order-summary';
-import WPCheckoutOrderReview from './components/wp-checkout-order-review';
+import { createStripeMethod } from './lib/payment-methods/stripe-credit-card-fields';
+import { createApplePayMethod } from './lib/payment-methods/apple-pay';
+import { createPayPalMethod } from './lib/payment-methods/paypal';
+import { createCreditCardMethod } from './lib/payment-methods/credit-card';
+import { useActiveStep, useIsStepActive } from './lib/active-step';
+import CheckoutOrderSummary, {
+	CheckoutOrderSummaryTitle,
+} from './components/checkout-order-summary';
+import {
+	getDefaultOrderSummaryStep,
+	getDefaultPaymentMethodStep,
+	getDefaultOrderReviewStep,
+} from './components/default-steps';
 
 // Re-export the public API
 export {
 	Checkout,
-	createRegistry,
+	CheckoutModal,
+	CheckoutOrderSummary,
+	CheckoutOrderSummaryTitle,
 	CheckoutPaymentMethods,
 	CheckoutProvider,
 	CheckoutStep,
 	OrderReviewLineItems,
 	OrderReviewSection,
 	OrderReviewTotal,
+	createApplePayMethod,
+	createCreditCardMethod,
+	createPayPalMethod,
+	createRegistry,
+	createStripeMethod,
+	getDefaultOrderReviewStep,
+	getDefaultOrderSummaryStep,
+	getDefaultPaymentMethodStep,
 	renderDisplayValueMarkdown,
+	useActiveStep,
 	useAllPaymentMethods,
-	useCheckoutHandlers,
-	useLineItems,
 	useCheckoutRedirects,
+	useDispatch,
+	useEvents,
+	useIsStepActive,
+	useLineItems,
+	useMessages,
+	usePaymentComplete,
+	usePaymentData,
 	usePaymentMethod,
 	usePaymentMethodId,
 	useRegisterStore,
 	useRegistry,
 	useSelect,
-	useDispatch,
-	useLocalize,
 	useTotal,
-	WPCheckoutOrderSummary,
-	WPCheckoutOrderReview,
-	useHasDomainsInCart,
 };

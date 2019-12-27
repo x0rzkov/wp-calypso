@@ -2,7 +2,8 @@
  * External dependencies
  */
 import React, { useEffect } from 'react';
-import styled, { keyframes } from '@emotion/styled';
+import styled from '@emotion/styled';
+import { keyframes } from '@emotion/core';
 import PropTypes from 'prop-types';
 
 /**
@@ -111,7 +112,8 @@ const CheckoutModalContent = styled.div`
 	background: ${props => props.theme.colors.surface};
 	display: block;
 	width: 100%;
-	max-width: 300px;
+	max-width: 350px;
+	border: 1px solid ${props => props.theme.colors.borderColorLight};
 	padding: 32px;
 	animation: ${animateIn} 0.2s 0.1s ease-out;
 	animation-fill-mode: backwards;
@@ -122,6 +124,7 @@ const CheckoutModalTitle = styled.h1`
 	font-weight: ${props => props.theme.weights.normal};
 	font-size: 24px;
 	color: ${props => props.theme.colors.textColor};
+	line-height: 1.3;
 `;
 
 const CheckoutModalCopy = styled.p`
@@ -133,7 +136,7 @@ const CheckoutModalActions = styled.div`
 	justify-content: flex-end;
 	margin-top: 24px;
 
-	button:first-child {
+	button:first-of-type {
 		margin-right: 8px;
 	}
 `;
@@ -149,7 +152,7 @@ function preventClose( event ) {
 
 function useModalScreen( isVisible, closeModal ) {
 	useEffect( () => {
-		document.body.style = isVisible ? 'overflow: hidden' : 'overflow: scroll';
+		document.body.style.cssText = isVisible ? 'overflow: hidden' : 'overflow: scroll';
 		const keyPressHandler = makeHandleKeyPress( closeModal );
 		if ( isVisible ) {
 			document.addEventListener( 'keydown', keyPressHandler, false );

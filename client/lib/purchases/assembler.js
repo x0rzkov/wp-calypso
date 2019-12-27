@@ -1,5 +1,3 @@
-/** @format */
-
 /**
  * External dependencies
  */
@@ -75,6 +73,7 @@ function createPurchaseObject( purchase ) {
 		siteId: Number( purchase.blog_id ),
 		siteName: purchase.blogname,
 		subscribedDate: purchase.subscribed_date,
+		subscribedMoment: purchase.subscribed_date ? i18n.moment( purchase.subscribed_date ) : null,
 		subscriptionStatus: purchase.subscription_status,
 		tagLine: purchase.tag_line,
 		taxAmount: purchase.tax_amount,
