@@ -7,10 +7,10 @@ import React, { useState, useEffect, useMemo } from 'react';
  * Internal dependencies
  */
 import { StripeHookProvider, useStripe } from '../../lib/stripe';
-import { useLineItems, useCheckoutHandlers } from '../../public-api';
+import { useLineItems, usePaymentComplete } from '../../public-api';
 import { useLocalize } from '../../lib/localize';
-import BillingFields from '../../components/billing-fields';
 import PaymentRequestButton from '../../components/payment-request-button';
+import { PaymentMethodLogos } from '../styled-components/payment-method-logos';
 
 export function createApplePayMethod( { registerStore, fetchStripeConfiguration } ) {
 	const actions = {
@@ -62,11 +62,9 @@ export function createApplePayMethod( { registerStore, fetchStripeConfiguration 
 	} );
 	return {
 		id: 'apple-pay',
-		LabelComponent: ApplePayLabel,
-		PaymentMethodComponent: () => null,
-		BillingContactComponent: BillingFields,
-		SubmitButtonComponent: ApplePaySubmitButton,
-		SummaryComponent: ApplePaySummary,
+		label: <ApplePayLabel />,
+		submitButton: <ApplePaySubmitButton />,
+		inactiveContent: <ApplePaySummary />,
 		CheckoutWrapper: StripeHookProvider,
 		getAriaLabel: localize => localize( 'Apple Pay' ),
 	};
@@ -78,18 +76,20 @@ export function ApplePayLabel() {
 	return (
 		<React.Fragment>
 			<span>{ localize( 'Apple Pay' ) }</span>
-			<ApplePayIcon fill="black" />
+			<PaymentMethodLogos className="apple-pay__logo payment-logos">
+				<ApplePayIcon fill="black" />
+			</PaymentMethodLogos>
 		</React.Fragment>
 	);
 }
 
-export function ApplePaySubmitButton() {
+export function ApplePaySubmitButton( { disabled } ) {
 	const localize = useLocalize();
-	const { onSuccess } = useCheckoutHandlers();
+	const onPaymentComplete = usePaymentComplete();
 	const paymentRequestOptions = usePaymentRequestOptions();
 	const { paymentRequest, canMakePayment } = useStripePaymentRequest( {
 		paymentRequestOptions,
-		onSubmit: onSuccess,
+		onSubmit: onPaymentComplete,
 	} );
 
 	if ( ! canMakePayment ) {
@@ -103,7 +103,14 @@ export function ApplePaySubmitButton() {
 		);
 	}
 
-	return <PaymentRequestButton paymentRequest={ paymentRequest } paymentType="apple-pay" />;
+	return (
+		<PaymentRequestButton
+			disabled={ disabled }
+			disabledReason={ disabled && localize( 'The form is not complete' ) }
+			paymentRequest={ paymentRequest }
+			paymentType="apple-pay"
+		/>
+	);
 }
 
 export function ApplePaySummary() {
@@ -120,6 +127,7 @@ function ApplePayIcon( { fill, className } ) {
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
 			aria-hidden="true"
+			focusable="false"
 			className={ className }
 		>
 			<path

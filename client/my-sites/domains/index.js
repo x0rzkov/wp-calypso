@@ -1,4 +1,3 @@
-/** @format */
 /**
  * External dependencies
  */
@@ -64,6 +63,14 @@ export default function() {
 	page(
 		paths.domainManagementEmailForwarding( ':site', ':domain' ),
 		domainManagementController.domainManagementEmailForwardingRedirect
+	);
+
+	page(
+		paths.domainManagementChangeSiteAddress( ':site', ':domain' ),
+		...getCommonHandlers(),
+		domainManagementController.domainManagementChangeSiteAddress,
+		makeLayout,
+		clientRender
 	);
 
 	page(

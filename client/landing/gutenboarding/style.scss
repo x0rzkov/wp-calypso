@@ -1,4 +1,4 @@
-@import 'assets/stylesheets/gutenberg-base-styles/style.scss';
+@import 'assets/stylesheets/gutenberg-base-styles';
 
 // Override core variables: we don't have wp-admin header and sidebar in Calypso
 // Targetting styles from `@wordpress/edit-post`
@@ -12,6 +12,10 @@ $admin-sidebar-width-collapsed: 0;
 @import '~@wordpress/edit-post/src/style.scss';
 @import '~@wordpress/block-editor/src/style.scss';
 @import '~@wordpress/format-library/src/style.scss';
+
+.gutenboard__edit-post-layout-content {
+	position: static;
+}
 
 .wp-block {
 	max-width: 1100px; // Overrides default $content-width
