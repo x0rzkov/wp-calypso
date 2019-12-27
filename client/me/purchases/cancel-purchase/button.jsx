@@ -251,7 +251,7 @@ class CancelPurchaseButton extends Component {
 	};
 
 	render() {
-		const { purchase, site, translate } = this.props;
+		const { purchase, selectedSite, translate } = this.props;
 		let text, onClick;
 
 		if ( isRefundable( purchase ) ) {
@@ -298,7 +298,7 @@ class CancelPurchaseButton extends Component {
 					defaultContent={ this.renderCancellationEffect() }
 					onInputChange={ this.onSurveyChange }
 					purchase={ purchase }
-					selectedSite={ site }
+					selectedSite={ selectedSite }
 					isVisible={ this.state.showDialog }
 					onClose={ this.closeDialog }
 					onClickFinalConfirm={ this.submitCancelAndRefundPurchase }
