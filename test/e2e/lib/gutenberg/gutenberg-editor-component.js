@@ -92,10 +92,22 @@ export default class GutenbergEditorComponent extends AsyncBaseContainer {
 		}
 	}
 
+	async saveDraft() {
+		await this.driver.sleep( 3000 );
+		await driverHelper.clickWhenClickable( this.driver, By.css( 'button.editor-post-save-draft' ) );
+		return await this.ensureSaved();
+	}
+
 	async enterTitle( title ) {
 		const titleFieldSelector = By.css( '.editor-post-title__input' );
 		await driverHelper.clearTextArea( this.driver, titleFieldSelector );
 		return await this.driver.findElement( titleFieldSelector ).sendKeys( title );
+	}
+
+	async getTitle() {
+		return await this.driver
+			.findElement( By.css( '.editor-post-title__input' ) )
+			.getAttribute( 'value' );
 	}
 
 	async enterText( text ) {
@@ -104,6 +116,14 @@ export default class GutenbergEditorComponent extends AsyncBaseContainer {
 		await driverHelper.clickWhenClickable( this.driver, appenderSelector );
 		await driverHelper.waitTillPresentAndDisplayed( this.driver, textSelector );
 		return await this.driver.findElement( textSelector ).sendKeys( text );
+	}
+
+	async getContent() {
+		return await this.driver.findElement( By.css( '.block-editor-block-list__layout' ) ).getText();
+	}
+
+	async undo() {
+		return await driverHelper.clickWhenClickable( this.driver, By.css( '.editor-history__undo' ) );
 	}
 
 	async insertShortcode( shortcode ) {
