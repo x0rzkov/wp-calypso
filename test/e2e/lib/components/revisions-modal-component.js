@@ -11,7 +11,11 @@ import AsyncBaseContainer from '../async-base-container';
 
 export default class RevisionsModalComponent extends AsyncBaseContainer {
 	constructor( driver ) {
-		super( driver, By.css( '.editor-revisions__dialog' ) );
+		super( driver, By.css( '.editor-revisions' ) );
+	}
+
+	async _preInit() {
+		return await this.driver.switchTo().defaultContent();
 	}
 
 	async loadFirstRevision() {

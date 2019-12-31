@@ -48,7 +48,7 @@ export default class GutenbergEditorComponent extends AsyncBaseContainer {
 		await this.driver.sleep( 2000 );
 	}
 
-	async initEditor( { dismissPageTemplateSelector = true } = {} ) {
+	async initEditor( { dismissPageTemplateSelector = false } = {} ) {
 		if ( dismissPageTemplateSelector ) {
 			this.dismissPageTemplateSelector();
 		}
@@ -122,8 +122,10 @@ export default class GutenbergEditorComponent extends AsyncBaseContainer {
 		return await this.driver.findElement( By.css( '.block-editor-block-list__layout' ) ).getText();
 	}
 
-	async undo() {
-		return await driverHelper.clickWhenClickable( this.driver, By.css( '.editor-history__undo' ) );
+	async replaceTextOnLastParagraph( text ) {
+		const paragraph = By.css( '.wp-block-paragraph' );
+		await driverHelper.clearTextArea( this.driver, paragraph );
+		return await this.driver.findElement( paragraph ).sendKeys( text );
 	}
 
 	async insertShortcode( shortcode ) {

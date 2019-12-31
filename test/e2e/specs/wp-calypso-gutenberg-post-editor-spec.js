@@ -1247,15 +1247,14 @@ describe( `[${ host }] Calypso Gutenberg Editor: Posts (${ screenSize })`, funct
 			const editor = await GutenbergEditorComponent.Expect( driver );
 			await editor.enterTitle( originalTitle );
 			await editor.enterText( originalContent );
-			await editor.saveDraft();
+			await editor.ensureSaved();
 		} );
 
 		step( 'Can update post title and text content', async function() {
 			const editor = await GutenbergEditorComponent.Expect( driver );
-			await editor.undo(); // Removes paragraph added on previous step.
 			await editor.enterTitle( updatedTitle );
-			await editor.enterText( updatedContent );
-			await editor.update();
+			await editor.replaceTextOnLastParagraph( updatedContent );
+			await editor.ensureSaved();
 		} );
 
 		step( 'Can open the revisions modal', async function() {
