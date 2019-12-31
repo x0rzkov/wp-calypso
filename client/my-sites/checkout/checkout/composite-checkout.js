@@ -6,7 +6,12 @@ import PropTypes from 'prop-types';
 import { CheckoutProvider } from '@automattic/composite-checkout';
 import debugFactory from 'debug';
 import { useSelector, useDispatch } from 'react-redux';
-import { WPCheckout, useWpcomStore, useShoppingCart } from '@automattic/composite-checkout-wpcom';
+import {
+	WPCheckout,
+	useWpcomStore,
+	useShoppingCart,
+	FormFieldAnnotation,
+} from '@automattic/composite-checkout-wpcom';
 
 /**
  * Internal dependencies
@@ -31,8 +36,14 @@ const debug = debugFactory( 'calypso:composite-checkout' );
 const successRedirectUrl = window.location.href;
 const failureRedirectUrl = window.location.href;
 
-// Wrapper component
-function CountrySelectMenu( { translate, onChange } ) {
+function CountrySelectMenu( {
+	translate,
+	onChange,
+	isDisabled,
+	isError,
+	errorMessage,
+	selectedValue,
+} ) {
 	const dispatch = useDispatch();
 	const countriesList = useSelector( state => getCountries( state, 'payments' ) );
 
@@ -49,12 +60,28 @@ function CountrySelectMenu( { translate, onChange } ) {
 		}
 	}, [ countriesList, dispatch ] );
 
+	const countrySelectorLabel = 'country-selector-label';
+	const countrySelectorDescription = 'country-selector-description';
+
 	return (
-		<FormCountrySelect
-			countriesList={ countriesList }
-			translate={ translate }
-			onChange={ onChange }
-		/>
+		<FormFieldAnnotation
+			labelText={ translate( 'Country' ) }
+			isError={ isError }
+			isDisabled={ isDisabled }
+			labelId={ countrySelectorLabel }
+			descriptionId={ countrySelectorDescription }
+			errorMessage={ errorMessage }
+		>
+			<FormCountrySelect
+				countriesList={ countriesList }
+				translate={ translate }
+				onChange={ onChange }
+				disabled={ isDisabled }
+				selectedValue={ selectedValue }
+				ariaLabelledBy={ countrySelectorLabel }
+				ariaDescribedBy={ countrySelectorDescription }
+			/>
+		</FormFieldAnnotation>
 	);
 }
 
