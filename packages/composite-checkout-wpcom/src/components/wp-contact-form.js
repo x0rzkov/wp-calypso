@@ -37,12 +37,7 @@ export default function WPContactForm( { summary, isComplete, isActive, CountryS
 				<AddressFields section="contact" contactInfo={ contactInfo } setters={ setters } />
 			) }
 
-			<TaxFields
-				section="contact"
-				taxInfo={ contactInfo }
-				setters={ setters }
-				CountrySelectMenu={ CountrySelectMenu }
-			/>
+			<TaxFields section="contact" taxInfo={ contactInfo } setters={ setters } CountrySelectMenu={ CountrySelectMenu } />
 
 			<PhoneNumberField
 				id="contact-phone-number"
@@ -360,7 +355,8 @@ function TaxFields( { section, taxInfo, setters, CountrySelectMenu } ) {
 			</LeftColumn>
 
 			<RightColumn>
-				<CountrySelectMenu translate={ translate } />
+                <CountrySelectMenu translate={ translate } onChange={ value =>
+                    setContactField( 'country', { value, isTouched: true, isValid: !! value } ) } />
 				<Field
 					id={ section + '-country' }
 					type="text"

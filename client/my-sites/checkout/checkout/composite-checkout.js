@@ -32,7 +32,7 @@ const successRedirectUrl = window.location.href;
 const failureRedirectUrl = window.location.href;
 
 // Wrapper component
-function CountrySelectMenu( { translate } ) {
+function CountrySelectMenu( { translate, onChange } ) {
 	const dispatch = useDispatch();
 	const countriesList = useSelector( state => getCountries( state, 'payments' ) );
 
@@ -53,9 +53,7 @@ function CountrySelectMenu( { translate } ) {
 		<FormCountrySelect
 			countriesList={ countriesList }
 			translate={ translate }
-			// Once we get this working with redux the onChange prop
-			// will need to be passed in; see TaxFields
-			onChange={ foo => console.log( 'Country Changed: ' + foo ) }
+			onChange={ onChange }
 		/>
 	);
 }
