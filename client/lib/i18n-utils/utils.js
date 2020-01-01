@@ -85,7 +85,7 @@ export function getLanguageSlugs() {
 /**
  * Matches and returns language from config.languages based on the given localeSlug
  * @param  {string} langSlug locale slug of the language to match
- * @return {Object|undefined} An object containing the locale data or undefined.
+ * @return {object|undefined} An object containing the locale data or undefined.
  */
 export function getLanguage( langSlug ) {
 	if ( localeRegex.test( langSlug ) ) {
