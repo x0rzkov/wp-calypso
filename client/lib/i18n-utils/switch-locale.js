@@ -49,7 +49,7 @@ export function getLanguageFilePathUrl() {
  *
  * @param {String} localeSlug A locale slug. e.g. fr, jp, zh-tw
  * @param {String} fileType The desired file type, js or json. Default to json.
- * @param {Object} languageRevisions An optional language revisions map. If it exists, the function will append the revision within as cache buster.
+ * @param {object} languageRevisions An optional language revisions map. If it exists, the function will append the revision within as cache buster.
  *
  * @return {String} A language file URL.
  */

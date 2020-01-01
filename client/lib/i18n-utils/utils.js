@@ -235,9 +235,9 @@ export function removeLocaleFromPath( path ) {
 /**
  * Filter out unexpected values from the given language revisions object.
  *
- * @param {Object} languageRevisions A candidate language revisions object for filtering.
+ * @param {object} languageRevisions A candidate language revisions object for filtering.
  *
- * @return {Object} A valid language revisions object derived from the given one.
+ * @return {object} A valid language revisions object derived from the given one.
  */
 export function filterLanguageRevisions( languageRevisions ) {
 	const langSlugs = getLanguageSlugs();
