@@ -186,11 +186,15 @@ export default class GutenbergEditorComponent extends AsyncBaseContainer {
 	}
 
 	async closeBlockInserter() {
-		const inserterToggleSelector = By.css( '.edit-post-header .block-editor-inserter__toggle' );
+		const inserterCloseSelector = By.css(
+			driverManager.currentScreenSize() === 'mobile'
+				? '.block-editor-inserter__popover .components-popover__close'
+				: '.edit-post-header .block-editor-inserter__toggle'
+		);
 		const inserterMenuSelector = By.css( '.block-editor-inserter__menu' );
 		if ( await driverHelper.isElementPresent( this.driver, inserterMenuSelector ) ) {
-			await driverHelper.waitTillPresentAndDisplayed( this.driver, inserterToggleSelector );
-			await driverHelper.clickWhenClickable( this.driver, inserterToggleSelector );
+			await driverHelper.waitTillPresentAndDisplayed( this.driver, inserterCloseSelector );
+			await driverHelper.clickWhenClickable( this.driver, inserterCloseSelector );
 			await driverHelper.waitTillNotPresent( this.driver, inserterMenuSelector );
 		}
 	}
