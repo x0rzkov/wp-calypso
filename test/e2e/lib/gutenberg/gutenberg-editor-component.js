@@ -178,11 +178,10 @@ export default class GutenbergEditorComponent extends AsyncBaseContainer {
 	}
 
 	async isBlockCategoryPresent( name ) {
-		this.openBlockInserterAndSearch( name );
-		return await driverHelper.elementIsNotPresent(
-			this.driver,
-			By.css( '.block-editor-inserter__no-results' )
-		);
+		const categorySelector = '.block-editor-inserter__results .components-panel__body-title';
+		const category = await this.driver.findElement( By.css( categorySelector ) );
+		const categoryName = category.getText();
+		return categoryName === name;
 	}
 
 	async closeBlockInserter() {
@@ -192,11 +191,8 @@ export default class GutenbergEditorComponent extends AsyncBaseContainer {
 				: '.edit-post-header .block-editor-inserter__toggle'
 		);
 		const inserterMenuSelector = By.css( '.block-editor-inserter__menu' );
-		if ( await driverHelper.isElementPresent( this.driver, inserterMenuSelector ) ) {
-			await driverHelper.waitTillPresentAndDisplayed( this.driver, inserterCloseSelector );
-			await driverHelper.clickWhenClickable( this.driver, inserterCloseSelector );
-			await driverHelper.waitTillNotPresent( this.driver, inserterMenuSelector );
-		}
+		await driverHelper.clickWhenClickable( this.driver, inserterCloseSelector );
+		await driverHelper.waitTillNotPresent( this.driver, inserterMenuSelector );
 	}
 
 	// return blockID - top level block id which is looks like `block-b91ce479-fb2d-45b7-ad92-22ae7a58cf04`. Should be used for further interaction with added block.
