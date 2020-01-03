@@ -1275,6 +1275,8 @@ describe( `[${ host }] Calypso Gutenberg Editor: Posts (${ screenSize })`, funct
 			await revisions.loadFirstRevision();
 
 			const editor = await GutenbergEditorComponent.Expect( driver );
+			await editor.closeSidebar();
+			await editor.ensureSaved();
 			const title = await editor.getTitle();
 			const content = await editor.getContent();
 			assert.strictEqual( title, originalTitle, 'The restored post title is not correct' );
