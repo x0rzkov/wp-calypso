@@ -219,7 +219,7 @@ Creates a [data store](#data-stores) registry to be passed (optionally) to [Chec
 Creates a [Payment Method](#payment-methods) object. Requires passing an object with the following properties:
 
 - `registerStore: object => object`. The `registerStore` function from the return value of [createRegistry](#createRegistry).
-- `makePayPalExpressRequest: async object => string`. An async function that sends the request to the endpoint to get the redirect url.
+- `submitTransaction: async object => string`. An async function that sends the request to the endpoint to get the redirect url.
 
 ### createStripeMethod
 
