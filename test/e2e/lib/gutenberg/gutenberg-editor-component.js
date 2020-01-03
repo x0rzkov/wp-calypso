@@ -92,12 +92,6 @@ export default class GutenbergEditorComponent extends AsyncBaseContainer {
 		}
 	}
 
-	async saveDraft() {
-		await this.driver.sleep( 3000 );
-		await driverHelper.clickWhenClickable( this.driver, By.css( 'button.editor-post-save-draft' ) );
-		return await this.ensureSaved();
-	}
-
 	async enterTitle( title ) {
 		const titleFieldSelector = By.css( '.editor-post-title__input' );
 		await driverHelper.clearTextArea( this.driver, titleFieldSelector );
