@@ -24,7 +24,9 @@ export default class RevisionsModalComponent extends AsyncBaseContainer {
 			By.css( '.editor-revisions-list__revision:last-child .editor-revisions-list__button' )
 		);
 
-		await driverHelper.clickWhenClickable( this.driver, By.css( '[data-e2e-button="load"]' ) );
+		// Using a JS click here since the Webdriver click wasn't working.
+		const loadButton = await this.driver.findElement( By.css( '[data-e2e-button="load"]' ) );
+		await this.driver.executeScript( 'arguments[0].click()', loadButton );
 
 		return driverHelper.waitTillNotPresent( this.driver, this.expectedElementSelector );
 	}
