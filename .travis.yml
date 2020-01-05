@@ -31,7 +31,6 @@ env:
 language: bash
 
 script:
-  - make docker-all
   - docker build -t x0rzkov/wp-calypso:latest .
   - docker images
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
