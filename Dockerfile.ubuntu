@@ -1,9 +1,8 @@
-FROM mhart/alpine-node:12
+FROM node:12.13.1
 LABEL maintainer="Automattic"
 
 WORKDIR    /calypso
 
-RUN apk add --no-cache bash nano
 
 ENV        CONTAINER 'docker'
 ENV        NODE_PATH=/calypso/server:/calypso/client
