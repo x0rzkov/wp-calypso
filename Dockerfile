@@ -3,7 +3,7 @@ LABEL maintainer="Automattic"
 
 WORKDIR    /calypso
 
-RUN apk add --no-cache bash nano
+RUN apk add --no-cache bash nano git
 
 ENV        CONTAINER 'docker'
 ENV        NODE_PATH=/calypso/server:/calypso/client
